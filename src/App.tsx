@@ -1,11 +1,13 @@
-import {useState} from 'react'
+import {useContext, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import {observer} from "mobx-react-lite";
+import {AppContext, StoreProps} from "./store";
 
 const App = observer(() =>
 {
-	const [count, setCount] = useState(0)
+	const store: any = useContext(AppContext);
+	const {count}: any = store;
 
 	return <div className="App">
 		<div>
@@ -18,7 +20,7 @@ const App = observer(() =>
 		</div>
 		<h1>Vite + React</h1>
 		<div className="card">
-			<button onClick={() => setCount((count) => count + 1)}>
+			<button onClick={() => store.count = count + 1}>
 				count is {count}
 			</button>
 			<p>
