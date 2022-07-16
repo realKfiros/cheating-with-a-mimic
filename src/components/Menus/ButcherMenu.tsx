@@ -85,8 +85,9 @@ const styleItem = ({ selected }: any) => css`
   display: flex;
   flex-direction: row;
   /* padding: 4px 5px; */
+  justify-content: space-between;
   cursor: default;
-  width: 120px;
+  width: 90px;
 
   > * {
     flex: 1;
@@ -100,7 +101,7 @@ const styleItem = ({ selected }: any) => css`
 
   .item-title,
   .item-price {
-    //margin: auto;
+    margin: auto;
   }
 
   .item-title {
@@ -108,12 +109,10 @@ const styleItem = ({ selected }: any) => css`
     text-align: start;
     line-height: 0.5rem;
     margin: auto;
+    padding-left: 4px;
   }
 
   .item-price {
-    display: flex;
-    align-items: flex-end;
-    text-align: end;
     font-size: 5px;
   }
 `;

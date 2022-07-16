@@ -5,6 +5,13 @@ import liver from "./assets/meats/Liver 32x32.png";
 import heart from "./assets/meats/heart 32x32.png";
 import tongue from "./assets/meats/tongue 32x32.png";
 import shortRibs from "./assets/meats/short ribs 32x32.png";
+import flank from "./assets/meats/Flank steak 32x32.png";
+import ribeye from "./assets/meats/Ribeye 32x32.png";
+import sirloin from "./assets/meats/Sirloin steak 32x32.png";
+import strip from "./assets/meats/Strip steak 32x32.png";
+import tBone from "./assets/meats/TBone steake 32x32.png";
+import trimmedBrisket from "./assets/meats/Trimmed brisket 32x32.png";
+import tenderloin from "./assets/meats/tenderloin 32x32.png";
 
 export enum Stage {
   TABLE,
@@ -61,49 +68,49 @@ export const possibleStock = [
     price: 11,
     hunger_fulfillment_per_second: 1.05,
     timer: 5,
-    image: "",
+    image: sirloin,
   },
   {
     name: "Flank Steak",
     price: 12,
     hunger_fulfillment_per_second: 1.2,
     timer: 5,
-    image: "",
+    image: flank,
   },
   {
     name: "T-Bone Steak",
     price: 15,
     hunger_fulfillment_per_second: 1.55,
     timer: 5,
-    image: "",
+    image: tBone,
   },
   {
     name: "Strip Steak",
     price: 16,
     hunger_fulfillment_per_second: 1.69,
     timer: 5,
-    image: "",
+    image: strip,
   },
   {
     name: "Brisket Trimmed",
     price: 17,
     hunger_fulfillment_per_second: 1.75,
     timer: 5,
-    image: "",
+    image: trimmedBrisket,
   },
   {
     name: "Rib eye steak",
     price: 18,
     hunger_fulfillment_per_second: 1.95,
     timer: 5,
-    image: "",
+    image: ribeye,
   },
   {
     name: "Tendorlion Steak",
     price: 20,
     hunger_fulfillment_per_second: 2,
     timer: 5,
-    image: "",
+    image: tenderloin,
   },
 ];
 
