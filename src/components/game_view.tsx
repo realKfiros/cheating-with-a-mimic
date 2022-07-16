@@ -3,18 +3,20 @@ import {observer} from 'mobx-react-lite';
 import {GameContext} from '../stores/game_store';
 import {css} from '@emotion/react';
 import { Stage } from '../common';
+import tablePlayerImage from '../assets/tableplayer.png'
 
 const styleGameView = css`
-    position: absolute;
-    z-index: 1;
+    left:0;
     .spriteObject {
         position: absolute;
-        left:0;
-        top:0;
     }
 
     .player {
-        
+        top:15px;
+        left:104px;
+        /* scale: calc(2em); */
+        /* height: calc((100vh/216)); */
+        /* width: auto; */
     }
 `;
 const GameView = observer(() =>
@@ -28,12 +30,12 @@ const GameView = observer(() =>
 
     return <div css={styleGameView}>
         { store.stage == Stage.TABLE && <div className='tableView'>
-            <div className='spriteObject player'></div>
+            <img className='spriteObject player' src={tablePlayerImage}></img>
             <div className='spriteObject gametable'></div>
             <div className='diceView'></div>
             <div className='userInterface'>
                 <div className='exitToStreet'></div>
-                <div className='moneySum'>{store.money}</div>
+                <div className='moneySum'></div>
                 {/* <div className='hungerBar'></div> */}
                 {/* <div className='susMeter'></div> */}
                 {/* <div className='cheatButton'></div> */}

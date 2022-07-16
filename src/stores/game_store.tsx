@@ -53,9 +53,8 @@ export class GameStore implements GameStoreProps
             this.money += moneyBetOn;
             console.log("win");
             if (didCheat)
-                //handle sus meter and dies' hunger
+                //handle sus meter
                 this.suspicion += 1;
-                this.hunger -= 1;
                 console.log("cheat");
             return true;
         }
@@ -69,13 +68,25 @@ export class GameStore implements GameStoreProps
 
     suggestToCheat = () =>
     {
-        //doStuff
-        return true;
+        return window.confirm("would you like to cheat?");
     }
 
     askBettingAmount = () =>
     {
+        let value = "";
+        do{
+            value = window.prompt("how much would you like to bet") as string;
+        }
+        while (parseInt(value, 10) > this.money)
         return 10;
+    }
+
+    handleHunger = () => {
+        this.hunger -= 0.001;
+        if (this.hunger < 0){
+            console.log("you've ran out of hunger");
+            this.running = false;
+        }
     }
 
     @action
@@ -104,7 +115,7 @@ export class GameStore implements GameStoreProps
             //
         }
         else if (this.stage == Stage.STREET){
-
+            
         }
         else if (this.stage == Stage.BUTCHER_SHOP){
             
@@ -112,6 +123,9 @@ export class GameStore implements GameStoreProps
         else if (this.stage == Stage.UPGRADE_SHOP){
             
         }
+
+        this.handleHunger();
+        
         if (this.running)
             this.gameLoop();
     }
