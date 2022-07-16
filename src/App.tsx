@@ -14,6 +14,7 @@ import { css } from "@emotion/react";
 
 const App = observer(() => {
   const [ratio, setRatio] = useState(0);
+  const [currentPage, setCurrentPage] = useState("main_menu");
   const size = useWindowSize();
   function useWindowSize() {
     useEffect(() => {
@@ -40,15 +41,11 @@ const App = observer(() => {
     align-items: center;
 
     .BackgroundTexture {
-      background-image: url(${mainBackground});
       height: 100%;
       width: auto;
-      aspect-ratio: 16 / 9;
       margin-left: auto;
       margin-right: auto;
-      background-repeat: no-repeat;
       position: absolute;
-      background-size: contain;
       z-index: 0;
     }
     .ForegroundElements {
@@ -66,7 +63,7 @@ const App = observer(() => {
   return (
     <div className="App">
       <div className="GameCanvas" css={styleGameCanvas}>
-        <div className="BackgroundTexture"></div>
+        <img className="BackgroundTexture" src={mainBackground}></img>
         <div className="ForegroundElements">
           {/* <MainMenu></MainMenu> */}
           {/* <ButcherMenu /> */}
