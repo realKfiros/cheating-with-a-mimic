@@ -6,6 +6,7 @@ import {css} from '@emotion/react';
 import { Stage, TableStage } from '../common';
 import gameBoard from '../assets/gameBoard2.png';
 import tablePlayerImage from '../assets/tableplayer.png'
+import BettingAmount from './modals/BettingAmount';
 
 
 const styleGameView = css`
@@ -29,7 +30,7 @@ const styleGameView = css`
     }
     
 `;
-const GameView = observer(() =>
+export const GameView = observer(() =>
 {
     const store = useContext(AppContext);
     const gameStore = useContext(GameContext);
@@ -58,8 +59,9 @@ const GameView = observer(() =>
 
     const askBettingAmount = ()=>
     {
-        console.log("asking")
-        store.openDialog("How much to bet?", <div>ass</div>)
+        store.openDialog("How much to bet?", <BettingAmount onChange={(value:number)=>{
+            gameStore.bettingAmount = value;
+        }}/>)
     }
 
     return <div css={styleGameView}>
@@ -94,5 +96,3 @@ const GameView = observer(() =>
         
     </div>;
 });
-
-export default GameView;

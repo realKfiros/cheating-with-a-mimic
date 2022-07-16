@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import MainMenu from "./components/Menus/MainMenu";
 import { AppContext, StoreProps } from "./store";
 import { GameContext, GameStore } from "./stores/game_store";
-import GameView from "./components/game_view";
+import {GameView} from "./components/game_view";
 import { Dialog } from "./components/dialog";
 import ButcherMenu from "./components/Menus/ButcherMenu";
 import PauseMenu from "./components/Menus/PauseMenu";
