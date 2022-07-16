@@ -135,7 +135,7 @@ export const randomNumber = (start:number, end:number)=> {
     if(end<start) {
         console.error("End number smaller than start number")
     }
-    let num = Math.floor(start + (Math.random() * (end-start)));
+    let num = Math.floor(start + (Math.random() * (end-start+1)));
     console.log("matos:",num);
     return num;
 }
