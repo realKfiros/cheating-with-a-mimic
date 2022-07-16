@@ -30,6 +30,7 @@ const App = observer(() => {
   const styleGameCanvas = css`
     height: 100vh;
     width: auto;
+	max-width:100vw;
     display: flex;
     justify-content: center;
     aspect-ratio: 16 / 9;
@@ -39,6 +40,8 @@ const App = observer(() => {
     vertical-align: middle;
     margin-top: auto;
     align-items: center;
+	overflow:hidden;
+	position: relative;
 
     .BackgroundTexture {
       height: 100%;
@@ -65,10 +68,10 @@ const App = observer(() => {
       <div className="GameCanvas" css={styleGameCanvas}>
         <img className="BackgroundTexture" src={mainBackground}></img>
         <div className="ForegroundElements">
-          {/* <MainMenu></MainMenu> */}
-          {/* <ButcherMenu /> */}
-          <GameContext.Provider value={new GameStore()}>
-            <GameView></GameView>
+          {currentPage == "main_menu" && <MainMenu onStart={()=>{setCurrentPage("game_view")}}/>}
+		  <GameContext.Provider value={new GameStore()}>
+			{currentPage == "butcher_menu" && <ButcherMenu />}
+            {currentPage == "game_view" && <GameView/>}
           </GameContext.Provider>
         </div>
       </div>
