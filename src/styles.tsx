@@ -12,6 +12,7 @@ export const menu = css`
   }
 
   .title {
+    font-family: "PixeliodSansBold";
     font-size: 10px;
     margin-bottom: 1px;
   }
