@@ -30,3 +30,10 @@ export const classNames = function (): string | undefined
 
 	return classes.join(' ') || undefined;
 };
+
+export const pick = (arr: any[], amount: number = 1): any[] =>
+{
+	const shuffled = [...arr].sort(() => 0.5 - Math.random());
+	console.log(shuffled);
+	return shuffled.slice(0, amount);
+};
