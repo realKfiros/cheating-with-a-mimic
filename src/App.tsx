@@ -64,17 +64,13 @@ const App = observer(() => {
     }
   `;
 
-  const store: any = useContext(AppContext);
-  const { count }: any = store;
-
   return (
     <div className="App">
       <div className="GameCanvas" css={styleGameCanvas}>
         <div className="BackgroundTexture"></div>
         <div className="ForegroundElements">
-          <MainMenu />
-          {/* <ButcherMenu /> */}
-          {/* <PauseMenu /> */}
+          {/* <MainMenu></MainMenu> */}
+          <ButcherMenu />
           <GameContext.Provider value={new GameStore()}>
             <GameView></GameView>
           </GameContext.Provider>
