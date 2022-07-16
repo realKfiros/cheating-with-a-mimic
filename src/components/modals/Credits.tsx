@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const Credits = () => {
   return (
-    <div>Credits</div>
-  )
-}
+    <ul>
+      <li>Normandeeznuts</li>
+      <li>@realKfiros</li>
+      <li>matos</li>
+    </ul>
+  );
+};
 
-export default Credits
+export default Credits;
