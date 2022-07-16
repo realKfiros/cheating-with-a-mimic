@@ -7,19 +7,20 @@ import { AppContext, StoreProps } from "./store";
 import { GameContext, GameStore } from "./stores/game_store";
 import GameView from "./components/game_view";
 import {Dialog} from "./components/dialog";
+import ButcherMenu from "./components/Menus/ButcherMenu";
+import PauseMenu from "./components/Menus/PauseMenu";
 
 const App = observer(() => {
-  const store: any = useContext(AppContext);
-  const { count }: any = store;
-
   return (
     <div className="App">
       <div className="GameCanvas" style={{ height: "100%", width: "100%" }}>
         <div className="BackgroundTexture"></div>
         <div className="ForegroundElements">
-          <MainMenu />
+          {/*<MainMenu />*/}
+          {/*<ButcherMenu />*/}
+          <PauseMenu />
           <GameContext.Provider value={new GameStore()}>
-            <GameView></GameView>
+            <GameView />
           </GameContext.Provider>
         </div>
       </div>
