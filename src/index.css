@@ -1,10 +1,10 @@
 @font-face {
-  font-family: "fff-forward";
-  src: local("fff-forward", url(./font/fff-forward.regular.ttf) format("truetype"));
+  font-family: "PixeliodSans";
+  src: local("PixeliodSans"), url(./font/PixeloidSans-nR3g1.ttf) format("truetype");
 }
 
 :root {
-  font-family: fff-forward;
+  font-family: PixeliodSans;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
