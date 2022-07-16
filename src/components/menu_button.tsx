@@ -7,14 +7,14 @@ interface MenuButtonProps {
 
 const styleMenuButton = css`
   cursor: pointer;
-  border: 4px solid black;
-  border-radius: 28px;
-  width: 230px;
-  height: 90px;
+  border: 2px solid black;
+  border-radius: 5.6px;
+  width: 47px;
+  height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 7px;
   background-color: #d9d1a9;
   color: #0d0d0d;
 
