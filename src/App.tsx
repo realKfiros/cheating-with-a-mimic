@@ -69,7 +69,7 @@ const App = observer(() => {
         <div className="BackgroundTexture"></div>
         <div className="ForegroundElements">
           {/* <MainMenu></MainMenu> */}
-          <ButcherMenu />
+          {/* <ButcherMenu /> */}
           <GameContext.Provider value={new GameStore()}>
             <GameView></GameView>
           </GameContext.Provider>
