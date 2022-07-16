@@ -6,7 +6,6 @@ import { css } from "@emotion/react";
 import { action, computed, makeObservable, observable } from "mobx";
 import { AppContext } from "../../store";
 import { classNames, pick } from "../../utilities";
-import image from "../../assets/Ground Beef 2.png";
 import { possibleStock } from "../../common";
 
 const styleButcherMenu = css`
@@ -58,6 +57,7 @@ interface ButcherItem {
   price: number;
   hunger_fulfillment_per_second: number;
   timer: number;
+  image: string;
 }
 
 const styleButcherBoard = css`
@@ -117,7 +117,7 @@ const styleItem = ({ selected }: any) => css`
     font-size: 5px;
   }
 `;
-const Item: FC<ButcherItem> = ({ name, price }) => {
+const Item: FC<ButcherItem> = ({ name, price, image }) => {
   const [selected, setSelected] = useState(false);
 
   return (
