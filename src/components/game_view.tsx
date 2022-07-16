@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState, FC} from 'react';
 import {observer} from 'mobx-react-lite';
 import {GameContext} from '../stores/game_store';
 import {AppContext} from '../store';
@@ -13,6 +13,10 @@ import dice3 from '../assets/Dice3.png'
 import dice4 from '../assets/Dice4.png'
 import dice5 from '../assets/Dice5.png'
 import dice6 from '../assets/Dice6.png'
+import streetPlayer from '../assets/streetPlayer.png';
+import mainBackground from "../assets/Street-BackGround.png";
+
+
 import BettingAmount from './modals/BettingAmount';
 import {autorun, toJS} from 'mobx';
 
@@ -23,8 +27,15 @@ enum DiceAnimStage
     CUP_FLIP,
     SHOW_DICE,
 };
+interface GameViewProps {
+    showButcher: ()=>void;
+}
 
-const styleGameView = css`
+export const GameView:FC<GameViewProps> = observer(({showButcher}) =>
+{
+    var [playerLocation, setPlayerLocation] = useState(192);
+    var [backgroundLocation, setBackgroundLocation] = useState(-384);
+    const styleGameView = css`
     left:0;
     .tableView {
         position: absolute;
@@ -65,15 +76,24 @@ const styleGameView = css`
         top:80px;
         left:190px;
     }
+    .BackgroundTexture {
+        left:${backgroundLocation}px;
+    }
+
+    .streetPlayer {
+        top:120px;
+        left:${playerLocation}px;
+    }
     
 `;
-export const GameView = observer(() =>
-{
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
     const [diceFiles, setdiceFiles] = useState(["matos","matos"]);
     const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
+    const [moveDirection, setMoveDirection] = useState("none");
     const store = useContext(AppContext);
     const gameStore = useContext(GameContext);
+
+    let keyPressed = false;
 
     useEffect(() =>
     {
@@ -85,6 +105,13 @@ export const GameView = observer(() =>
 
     useEffect(() =>
     {
+        document.addEventListener("keydown", event => {
+            if(!event.repeat)
+                keyDown(event.key);
+          });
+        document.addEventListener("keyup", event => {
+            keyUp(event.key);
+          });
         autorun(() =>
         {
             console.log("new stage: ",gameStore.tableStage);
@@ -117,6 +144,11 @@ export const GameView = observer(() =>
             
         });
     }, []);
+
+    useEffect(() =>
+    {
+        movePlayer();
+    },[playerLocation,moveDirection,backgroundLocation]);
 
     const askBettingAmount = ()=>
     {
@@ -174,6 +206,80 @@ export const GameView = observer(() =>
         }
     }
 
+    const movePlayer = ()=> {
+        console.log("moving ", moveDirection);
+        if(moveDirection == "none") {
+            return;
+        }
+        if(moveDirection == "right") {
+            setTimeout(() => {
+                if(playerLocation < 320) {
+                    setPlayerLocation(playerLocation+5);
+                } else {
+                    if(backgroundLocation > -768){
+                        setBackgroundLocation(backgroundLocation-5)
+                    }
+                }
+            }, 20);
+            
+        }
+        if(moveDirection == "left") {
+            setTimeout(() => {
+                if(playerLocation > 30) {
+                    setPlayerLocation(playerLocation-5);
+                } else {
+                    if(backgroundLocation < 0) {
+                        setBackgroundLocation(backgroundLocation+5)
+                    }
+                }
+            }, 20);
+        }
+        if(moveDirection == "up") {
+            tryEnter();
+        }
+    }
+
+    const tryEnter = ()=> {
+        let locationInStreet = playerLocation - backgroundLocation
+        console.log("location: ", locationInStreet);
+        if(locationInStreet > 20 && locationInStreet < 70) {
+            showButcher();
+        }
+    }
+
+    const keyDown = (keyValue: string) => {
+        switch (keyValue) {
+            case "ArrowRight":
+                console.log("right");
+                setMoveDirection("right");
+                break;
+        
+            case "ArrowLeft":
+                console.log("left");
+                setMoveDirection("left");
+                break;
+                    
+            case "ArrowUp":
+                setMoveDirection("up");
+                break;
+
+            case "ArrowDown":
+                console.log("down");
+                break;
+
+            case "escape":
+                console.log("escape");
+                break;
+        }
+        if(keyValue = "ArrowRight") {
+            
+        }
+    }
+
+    const keyUp = (keyValue: string) => {
+        setMoveDirection("none");
+    }
+
     return <div css={styleGameView}>
         { gameStore.stage == Stage.TABLE && <div className='tableView' onClick={()=>onLeftClick()} onContextMenu={onRightClick}>
             <img className='spriteObject gameBoard' src={gameBoard}></img>
@@ -205,12 +311,13 @@ export const GameView = observer(() =>
             
             
         </div>}
-        { gameStore.stage == Stage.STREET && <div className='streetView'>
+        { gameStore.stage == Stage.STREET && <div className='streetView' onKeyDown={(e)=>console.log("ass")} tabIndex={0}>
+            <img className="spriteObject BackgroundTexture" src={mainBackground}></img>
             <div className='characters'>
-                <div className='player'></div>
-                <div className='NPCs'>
+            <img className='spriteObject streetPlayer' src={streetPlayer}></img>
+            <div className='NPCs'>
                     
-                </div>
+            </div>
             </div>
             <div className='streetObjects'>
                 <div className='gametable'></div>

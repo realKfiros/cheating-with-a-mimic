@@ -71,7 +71,7 @@ const App = observer(() => {
           {currentPage == "main_menu" && <MainMenu onStart={()=>{setCurrentPage("game_view")}}/>}
 		  <GameContext.Provider value={new GameStore()}>
 			{currentPage == "butcher_menu" && <ButcherMenu />}
-            {currentPage == "game_view" && <GameView/>}
+            {currentPage == "game_view" && <GameView showButcher={()=>{setCurrentPage("butcher_menu")}}/>}
           </GameContext.Provider>
         </div>
       </div>

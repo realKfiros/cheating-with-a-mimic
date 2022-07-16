@@ -27,7 +27,7 @@ export class GameStore implements GameStoreProps
     @observable suspicion = 0;
     @observable money = 100;
     @observable running = true;
-    @observable stage = Stage.TABLE;
+    @observable stage = Stage.STREET;
     @observable timeOfDay = 0;
 
     @observable tableStage = TableStage.WAIT_NEXT_NPC;
