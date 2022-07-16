@@ -3,6 +3,11 @@
   src: local("PixeliodSans"), url(./font/PixeloidSans-nR3g1.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: "PixeliodSansBold";
+  src: local("PixeliodSansBold"), url(./font/PixeloidSansBold-RpeJo.ttf) format("truetype");
+}
+
 :root {
   font-family: PixeliodSans;
   font-size: 16px;
