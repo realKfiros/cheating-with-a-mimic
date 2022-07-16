@@ -1,7 +1,7 @@
 import {action, makeObservable, observable} from "mobx";
 import React, {ReactNode} from "react";
 
-export const AppContext = React.createContext(null);
+export const AppContext = React.createContext<any>(null);
 
 export interface StoreProps {
 	dialog: object;

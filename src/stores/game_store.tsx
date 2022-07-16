@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeObservable, observable, action } from 'mobx';
-import {Stage, randomNumber, randomDies} from '../common';
+import {Stage, TableStage, randomNumber, randomDies} from '../common';
 
 export const GameContext = React.createContext<any>(null);
 
@@ -13,16 +13,29 @@ interface GameStoreProps
     running: boolean;
     stage: Stage;
     timeOfDay: number;
+    tableStage: TableStage;
+    npcDiceResult: number[];
+    playerDiceResult: number[];
+    bettingAmount: number;
+    shouldCheat: boolean;
 }
 
 export class GameStore implements GameStoreProps
 {
-    @observable hunger = 0;
+    @observable hunger = 100;
     @observable suspicion = 0;
-    @observable money = 0;
+    @observable money = 100;
     @observable running = true;
     @observable stage = Stage.TABLE;
     @observable timeOfDay = 0;
+
+    @observable tableStage = TableStage.WAIT_NEXT_NPC;
+    @observable npcDiceResult = [0,0];
+    @observable playerDiceResult = [0,0];
+    @observable bettingAmount = 0;
+    @observable shouldCheat = false;
+
+
 
     constructor()
     {
@@ -31,6 +44,7 @@ export class GameStore implements GameStoreProps
     
     throwDice = (isPlayer=false,lowestSum=0) =>
     {
+        console.log("throwing");
         let diceResults = [0,0];
         if(!isPlayer) {
             diceResults = randomDies(0);
@@ -78,7 +92,7 @@ export class GameStore implements GameStoreProps
             value = window.prompt("how much would you like to bet") as string;
         }
         while (parseInt(value, 10) > this.money)
-        return 10;
+        return parseInt(value);
     }
 
     handleHunger = () => {
@@ -93,23 +107,55 @@ export class GameStore implements GameStoreProps
     gameLoop()
     {
         if(this.stage == Stage.TABLE) {
-            const NPCResult = this.throwDice();//NPC throws dice - gets some number
-
-            const shouldCheat = this.suggestToCheat();
-            let NPCSum = 0;
-            if(shouldCheat) {//Player decides whether to cheat or not
-                NPCSum = NPCResult[0] + NPCResult[1];
+            if(this.tableStage == TableStage.WAIT_NEXT_NPC) {
+                //do logic to spawn next NPC
+                this.tableStage = TableStage.ASK_BET;
+            } else if (this.tableStage == TableStage.ASK_BET) {
+                // this.bettingAmount = this.askBettingAmount()
+                // this.tableStage = TableStage.NPC_WILL_ROLL;
             }
-            //if you cheat - random from NPC result to highest number
-            //if not cheat - random in full range
-            const playerResult = this.throwDice(true,NPCSum);
-            
-            //if win - earn betting money
-            //if cheated - do cheat stuff
-            //if lose - lose betting money
-            const didWin = (playerResult[0] + playerResult[1]) > NPCSum;
-            this.handleGameResult(shouldCheat, didWin, this.askBettingAmount());
+            else if (this.tableStage == TableStage.NPC_WILL_ROLL) {
+                this.npcDiceResult = this.throwDice(); //NPC throws dice - gets some number
+                this.tableStage = TableStage.NPC_ROLLING
+            } else if (this.tableStage == TableStage.NPC_ROLLING) {
+                this.tableStage = TableStage.NPC_SHOW_RESULT
+            } else if (this.tableStage == TableStage.NPC_SHOW_RESULT) {
+                window.alert("NPC DICE: "+this.npcDiceResult[0] +", "+ this.npcDiceResult[1]);
+                this.tableStage = TableStage.PLAYER_WAIT_INPUT;
+            } else if (this.tableStage == TableStage.PLAYER_WAIT_INPUT) {
+                this.shouldCheat = this.suggestToCheat();
+                this.tableStage = TableStage.PLAYER_WILL_ROLL;
+            } else if (this.tableStage == TableStage.PLAYER_WILL_ROLL) {
+                let NPCSum = 0;
+                if(this.shouldCheat) {
+                    NPCSum = this.npcDiceResult[0] + this.npcDiceResult[1];
+                }
+                this.playerDiceResult = this.throwDice(true,NPCSum);
+                this.tableStage = TableStage.PLAYER_ROLLING;
+            } else if (this.tableStage == TableStage.PLAYER_ROLLING) {
+                this.tableStage = TableStage.PLAYER_SHOW_RESULT;
+            } else if (this.tableStage == TableStage.PLAYER_SHOW_RESULT) {
+                window.alert("PLAYER DICE: "+this.playerDiceResult[0] +", "+ this.playerDiceResult[1]);
+                this.tableStage = TableStage.SHOW_WINNER;
+            } else if (this.tableStage == TableStage.SHOW_WINNER) {
+                let npcSum = this.npcDiceResult[0] + this.npcDiceResult[1];
+                let playerSum = this.playerDiceResult[0] + this.playerDiceResult[1];
 
+                
+                if(playerSum > npcSum) {
+                    window.alert("You won");
+                } else if (playerSum < npcSum) {
+                    window.alert("You lost");
+                } else {
+                    window.alert("Its a tie");
+                }
+                this.handleGameResult(this.shouldCheat, playerSum > npcSum, this.bettingAmount);
+
+                this.tableStage = TableStage.WAIT_NEXT_NPC;
+            } else if (this.tableStage == TableStage.WAIT_WINNER_DIALOG_CLOSE) {
+
+            }
+            
             //--goto start--
             
             //
@@ -126,7 +172,11 @@ export class GameStore implements GameStoreProps
 
         this.handleHunger();
         
-        if (this.running)
-            this.gameLoop();
+        if (this.running) {
+            setTimeout(() => {
+                this.gameLoop();
+            }, 0);
+
+        }
     }
 }
