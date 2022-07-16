@@ -5,11 +5,11 @@ import { observer } from "mobx-react-lite";
 import MainMenu from "./components/Menus/MainMenu";
 import { AppContext, StoreProps } from "./store";
 import { GameContext, GameStore } from "./stores/game_store";
-import {GameView} from "./components/game_view";
+import { GameView } from "./components/game_view";
 import { Dialog } from "./components/dialog";
 import ButcherMenu from "./components/Menus/ButcherMenu";
 import PauseMenu from "./components/Menus/PauseMenu";
-import mainBackground from "./assets/gameBoard2.png";
+import mainBackground from "./assets/Street-BackGround.png";
 import { css } from "@emotion/react";
 
 const App = observer(() => {
@@ -39,30 +39,30 @@ const App = observer(() => {
     margin-top: auto;
     align-items: center;
 
-		.BackgroundTexture {
-			background-image: url(${mainBackground});
-			height: 100%;
-			width: auto;
-			aspect-ratio: 16 / 9;
-			margin-left: auto;
-			margin-right: auto;
-			background-repeat: no-repeat;
-			position: absolute;
-			background-size: contain;
-			z-index:0;
-		}
-		.ForegroundElements {
-			position: absolute;
-    		z-index: 1;
-			width: 384px;
-			height: 216px;
-			/*top:0;*/
-			/* transform: scale(calc(100vh/216)); */
-			transform: scale(${ratio});
-			align-items: left;
-		}
-	`;
-	
+    .BackgroundTexture {
+      background-image: url(${mainBackground});
+      height: 100%;
+      width: auto;
+      aspect-ratio: 16 / 9;
+      margin-left: auto;
+      margin-right: auto;
+      background-repeat: no-repeat;
+      position: absolute;
+      background-size: contain;
+      z-index: 0;
+    }
+    .ForegroundElements {
+      position: absolute;
+      z-index: 1;
+      width: 384px;
+      height: 216px;
+      /*top:0;*/
+      /* transform: scale(calc(100vh/216)); */
+      transform: scale(${ratio});
+      align-items: left;
+    }
+  `;
+
   return (
     <div className="App">
       <div className="GameCanvas" css={styleGameCanvas}>
@@ -80,4 +80,4 @@ const App = observer(() => {
   );
 });
 
-export default App
+export default App;
