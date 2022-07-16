@@ -23,11 +23,6 @@ const GameView = observer(() =>
 {
     const store = useContext(GameContext);
 
-    useEffect(() =>
-    {
-    }, []);
-
-
     return <div css={styleGameView}>
         { store.stage == Stage.TABLE && <div className='tableView'>
             <img className='spriteObject player' src={tablePlayerImage}></img>
@@ -40,8 +35,8 @@ const GameView = observer(() =>
                 {/* <div className='susMeter'></div> */}
                 {/* <div className='cheatButton'></div> */}
             </div>
-            
-            
+
+
         </div>}
         { store.stage == Stage.STREET && <div className='streetView'>
             <div className='characters'>
