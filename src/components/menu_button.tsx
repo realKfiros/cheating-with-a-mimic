@@ -17,6 +17,7 @@ const styleMenuButton = css`
   font-size: 7px;
   background-color: #d9d1a9;
   color: #0d0d0d;
+  line-height: 0.5rem;
 
   &:active {
     background-color: #a6a381;
