@@ -14,7 +14,6 @@ export enum TableStage
     WAITING_BET,
     NPC_WILL_ROLL,
     NPC_ROLLING,
-    NPC_SHOW_RESULT,
     PLAYER_WAIT_INPUT,
     PLAYER_WILL_ROLL,
     PLAYER_ROLLING,
@@ -108,22 +107,12 @@ export const possibleStock = [
 ];
 
 export const randomNumber = (start:number, end:number)=> {
+    console.log("matos123")
     if(end<start) {
         console.error("End number smaller than start number")
     }
     let num = Math.floor(start + (Math.random() * (end-start)));
-    console.log(num);
+    console.log("matos:",num);
     return num;
 }
 
-export const randomDies = (minSum: number) => {
-  let sum = 0;
-  let diceResults = [0, 0];
-  while (sum < minSum) {
-    diceResults[0] = randomNumber(1, 6);
-    diceResults[1] = randomNumber(1, 6);
-    sum = diceResults[0] + diceResults[1];
-  }
-
-  return diceResults;
-};
