@@ -1,20 +1,17 @@
-import { useContext, useState , useEffect} from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
-import { observer } from "mobx-react-lite";
-import MainMenu from "./components/Menus/MainMenu";
-import { AppContext, StoreProps } from "./store";
-import { GameContext, GameStore } from "./stores/game_store";
-import GameView from "./components/game_view";
-import {Dialog} from "./components/dialog";
-import ButcherMenu from "./components/Menus/ButcherMenu";
-import PauseMenu from "./components/Menus/PauseMenu";
-import mainBackground from './assets/gameBoard2.png';
+import {useContext, useState, useEffect} from 'react'
+import reactLogo from './assets/react.svg'
+import './App.css'
+import {observer} from "mobx-react-lite";
+import MainMenu from './components/Menus/MainMenu';
+import {AppContext, StoreProps} from "./store";
+import {GameContext, GameStore} from './stores/game_store';
+import GameView from './components/game_view';
+import mainBackground from './assets/main-background.png';
 import { css } from "@emotion/react";
 
 const App = observer(() =>
 {
-	const [ratio, setRatio] = useState(0);
+	const [ratio, setRatio] = useState(0); 
 	const size = useWindowSize();
 
 	function useWindowSize() {
@@ -64,7 +61,7 @@ const App = observer(() =>
 			align-items: left;
 		}
 	`;
-
+	
 	const store: any = useContext(AppContext);
 	const {count}: any = store;
 
@@ -78,8 +75,7 @@ const App = observer(() =>
 				</GameContext.Provider>
 			</div>
 		</div>
-		<Dialog />
 	</div>
 });
 
-export default App;
+export default App
