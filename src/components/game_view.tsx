@@ -13,16 +13,6 @@ const GameView = observer(() =>
 {
     const store = useContext(GameContext);
 
-    useEffect(() =>
-    {
-        gameLoop();
-    }, []);
-
-    const gameLoop = () =>
-    {
-        gameLoop();
-    };
-
     return <div css={styleGameView}>
         <div className='tableView'>
             <div className='player'></div>
