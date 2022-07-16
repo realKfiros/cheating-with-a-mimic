@@ -1,7 +1,7 @@
 import {css} from "@emotion/react";
 import {FC, useContext} from "react";
 import {observer} from "mobx-react-lite";
-import {AppContext} from "../store";
+import {AppContext, ButtonProps} from "../store";
 
 const styleDialog = css`
 	position: fixed;
@@ -37,10 +37,16 @@ const styleDialog = css`
 		border-bottom: 1px solid #eee;
 		text-align: start;
 	}
+	
+	.footer {
+		> button {
+			margin: 0 5px;
+		}
+	}
 `;
 export const Dialog: FC = observer(() =>
 {
-	const {dialog, closeDialog}: any = useContext(AppContext);
+	const {dialog}: any = useContext(AppContext);
 
 	if (!dialog.show)
 		return null;
@@ -51,8 +57,8 @@ export const Dialog: FC = observer(() =>
 				<span className="title">{dialog.title}</span>
 			</div>
 			<div className="body">{dialog.content}</div>
-			<div className="footer" onClick={closeDialog}>
-				<button>close</button>
+			<div className="footer">
+				{dialog.buttons.map(({onClick, title}: ButtonProps, index: number) => <button key={'button-' + index} onClick={onClick}>{title}</button>)}
 			</div>
 		</div>
 	</div>;
