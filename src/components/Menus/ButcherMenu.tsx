@@ -36,7 +36,7 @@ const ButcherMenu = () =>
 			<div className="vertical">
 				<ButcherBoard/>
 				<Spacer/>
-				<MenuButton text="Buy" onClick={() => openDialog("Bought that", "enjoy :)")}/>
+				<MenuButton text="Buy" onClick={() => openDialog({title: "Bought that", content: "enjoy :)"})}/>
 			</div>
 		</div>
 	);
