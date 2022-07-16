@@ -13,7 +13,7 @@ const MainMenu = () => {
     <div css={menu}>
       <div className="title">Game Title Here</div>
       <MenuButton text="Start" onClick={() => window.alert("wow")} />
-      <MenuButton text="Credits" onClick={() => openDialog("Credits", <Credits />)} />
+      <MenuButton text="Credits" onClick={() => openDialog({title: "Credits", content: <Credits />})} />
     </div>
   );
 };
