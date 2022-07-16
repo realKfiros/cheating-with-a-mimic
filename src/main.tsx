@@ -10,9 +10,9 @@ configure({
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<React.StrictMode>
+	// <React.StrictMode>
 		<AppContext.Provider value={new Store() as any}>
 			<App/>
 		</AppContext.Provider>
-	</React.StrictMode>
+	// </React.StrictMode>
 );

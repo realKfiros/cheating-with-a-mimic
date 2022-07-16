@@ -75,10 +75,13 @@ export const GameView = observer(() =>
     const store = useContext(AppContext);
     const gameStore = useContext(GameContext);
 
-    // useEffect(() =>
-    // {
-    //     gameStore.gameLoop();
-    // }, []);
+    useEffect(() =>
+    {
+        if (gameStore.tableStage == TableStage.PLAYER_ROLLING){
+            console.log("playe rolling");
+            startRoll();
+        }
+    }, [gameStore.tableStage]);
 
     useEffect(() =>
     {
@@ -91,10 +94,6 @@ export const GameView = observer(() =>
                 gameStore.setTableStage(TableStage.WAITING_BET);
             } 
             else if (gameStore.tableStage == TableStage.NPC_ROLLING){
-                startRoll();
-            }
-            else if (gameStore.tableStage == TableStage.PLAYER_ROLLING){
-                console.log("playe rolling");
                 startRoll();
             }
             else if (gameStore.tableStage == TableStage.SHOW_WINNER){
@@ -159,14 +158,12 @@ export const GameView = observer(() =>
         }
     }
 
-    const onLeftClick = () => {
+    function onLeftClick() {
         console.log("stage from gamestore: ", gameStore.tableStage)
         console.log("stage from state: ", tableStage)
         if (tableStage == TableStage.PLAYER_WAIT_INPUT){
             gameStore.shouldCheat = false;
-            setTimeout(() => {
-                gameStore.tableStage = TableStage.PLAYER_WILL_ROLL;
-            }, 1000);
+            gameStore.tableStage = TableStage.PLAYER_WILL_ROLL;
             
         }
     }

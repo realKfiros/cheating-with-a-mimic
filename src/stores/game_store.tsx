@@ -1,12 +1,6 @@
 import React from 'react';
 import { makeObservable, observable, action, computed, autorun, runInAction } from 'mobx';
 import {Stage, TableStage, randomNumber} from '../common';
-import dice1 from '../assets/Dice1.png'
-import dice2 from '../assets/Dice2.png'
-import dice3 from '../assets/Dice3.png'
-import dice4 from '../assets/Dice4.png'
-import dice5 from '../assets/Dice5.png'
-import dice6 from '../assets/Dice6.png'
 
 
 export const GameContext = React.createContext<any>(null);
