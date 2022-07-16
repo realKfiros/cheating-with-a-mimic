@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from "@emotion/react";
+import MenuButton from '../menu_button';
 
 const styleMainMenu = css`
     display: flex;
@@ -22,8 +23,7 @@ const MainMenu = () => {
   return (
     <div css={styleMainMenu}>
         <div className="title">Whacky Dice</div>
-        <img className="button start" onClick={() => console.log("start")}/>
-        <img className="button credits" onClick={() => console.log("open credits modal")} />
+        <MenuButton text="start!" onClick={() => window.alert('wow')} />
     </div>
   )
 }
