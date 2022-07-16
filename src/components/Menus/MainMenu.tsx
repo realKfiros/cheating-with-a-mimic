@@ -1,31 +1,22 @@
-import React from 'react';
-import { css } from "@emotion/react";
+import React, {useContext} from 'react';
+import {css} from "@emotion/react";
+import MenuButton from '../menu_button';
+import {AppContext} from "../../store";
+import {menu} from "../../styles";
 
-const styleMainMenu = css`
-    display: flex;
-    flex-direction: column;
-    .title {
-        
-    }
-    .button {
+const MainMenu = () =>
+{
+	const {openDialog}: any = useContext(AppContext);
 
-    }
-    .start {
-
-    }
-    .credits {
-
-    }
-`;
-
-const MainMenu = () => {
-  return (
-    <div css={styleMainMenu}>
-        <div className="title">Whacky Dice</div>
-        <img className="button start" onClick={() => console.log("start")}/>
-        <img className="button credits" onClick={() => console.log("open credits modal")} />
-    </div>
-  )
+	return <div css={menu}>
+		<div className="title">Game Title Here</div>
+		<MenuButton text="Start" onClick={() => window.alert('wow')}/>
+		<MenuButton text="Credits" onClick={() => openDialog('Credits', <ul>
+			<li>Normandeeznuts</li>
+			<li>@realKfiros</li>
+			<li>matos</li>
+		</ul>)}/>
+	</div>;
 }
 
 export default MainMenu;
