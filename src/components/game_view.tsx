@@ -5,6 +5,8 @@ import {css} from '@emotion/react';
 import { Stage } from '../common';
 
 const styleGameView = css`
+    position: absolute;
+    z-index: 1;
     .spriteObject {
         position: absolute;
         left:0;
@@ -31,7 +33,7 @@ const GameView = observer(() =>
             <div className='diceView'></div>
             <div className='userInterface'>
                 <div className='exitToStreet'></div>
-                <div className='moneySum'></div>
+                <div className='moneySum'>{store.money}</div>
                 {/* <div className='hungerBar'></div> */}
                 {/* <div className='susMeter'></div> */}
                 {/* <div className='cheatButton'></div> */}

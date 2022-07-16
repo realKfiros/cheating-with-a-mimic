@@ -104,6 +104,7 @@ export class GameStore implements GameStoreProps
             //
         }
         else if (this.stage == Stage.STREET){
+
         }
         else if (this.stage == Stage.BUTCHER_SHOP){
             
