@@ -14,5 +14,8 @@ export const menu = css`
 	.title {
 		font-size: 64px;
 		margin-bottom: 100px;
+		line-height: 4rem;
 	}
 `;
+
+export const Spacer = () => <div css={css`flex: 1 1 auto`}/>;
