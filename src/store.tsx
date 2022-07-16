@@ -6,11 +6,11 @@ export const AppContext = React.createContext(null);
 export interface StoreProps {
 	dialog: DialogProps;
 }
-interface ButtonProps {
+export interface ButtonProps {
 	title: string;
 	onClick: () => void;
 }
-interface DialogProps
+export interface DialogProps
 {
 	title: string;
 	content: ReactNode | null;
