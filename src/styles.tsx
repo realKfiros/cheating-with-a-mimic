@@ -8,12 +8,13 @@ export const menu = css`
 	align-items: center;
 
 	> * {
-		margin: 25px auto;
+		margin: 5px auto;
 	}
 
 	.title {
-		font-size: 64px;
-		margin-bottom: 100px;
+		font-size: 20px;
+		font-weight: 700;
+		margin-bottom: 20px;
 		line-height: 4rem;
 	}
 `;
