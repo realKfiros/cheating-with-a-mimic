@@ -1,5 +1,9 @@
-import React from "react";
+import React, {FC} from "react";
 import { css } from "@emotion/react";
+
+interface BettingAmountProps {
+  onChange: (value:number)=>void;
+}
 
 const bettingAmountStyle = css`
   display: flex;
@@ -11,10 +15,10 @@ const bettingAmountStyle = css`
   }
 `;
 
-const BettingAmount = () => {
+const BettingAmount:FC<BettingAmountProps> = ({onChange}) => {
   return (
     <div css={bettingAmountStyle}>
-      <input className="betting-field" name="Bet" type="number" />
+      <input className="betting-field" name="Bet" type="number" onChange={(e)=>{onChange(parseInt(e.target.value))}}/>
     </div>
   );
 };
