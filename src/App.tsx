@@ -52,6 +52,9 @@ const App = observer(() => {
   const [ratio, setRatio] = useState(0);
   const [currentPage, setCurrentPage] = useState("main_menu");
   const [backgroundLocation, setBackgroundLocation] = useState(-384);
+  const [gameStore, setGameStore] = useState(new GameStore());
+
+
 
   const size = useWindowSize();
   function useWindowSize() {
@@ -65,7 +68,9 @@ const App = observer(() => {
     }, []);
   }
 
-
+  useEffect(()=> {
+	gameStore.startLoops();
+  },[]);
 
   return (
     <div className="App">
@@ -81,7 +86,7 @@ const App = observer(() => {
               }}
             />
           )}
-          <GameContext.Provider value={new GameStore()}>
+          <GameContext.Provider value={gameStore}>
             {currentPage == "butcher_menu" && (
               <ButcherMenu goBack={() => setCurrentPage("game_view")} />
             )}
