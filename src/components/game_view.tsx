@@ -17,6 +17,7 @@ import streetPlayer from "../assets/streetPlayer.png";
 import mainBackground from "../assets/Street-BackGround.png";
 
 import BettingAmount from "./modals/BettingAmount";
+import GameWinner from "./modals/GameWinner";
 import { autorun, toJS } from "mobx";
 
 enum DiceAnimStage {
@@ -84,18 +85,44 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
   `;
   const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
   const [diceFiles, setdiceFiles] = useState(["matos", "matos"]);
-  const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
+//   const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
   const [moveDirection, setMoveDirection] = useState("none");
   const store = useContext(AppContext);
   const gameStore = useContext(GameContext);
 
-  let keyPressed = false;
-
   useEffect(() => {
+    console.log("new stage in useeffect ", gameStore.tableStage)
+    
     if (gameStore.tableStage == TableStage.PLAYER_ROLLING) {
       console.log("playe rolling");
       startRoll();
     }
+
+    console.log("new stage: ", gameStore.tableStage);
+      if (gameStore.tableStage == TableStage.ASK_BET) {
+        askBettingAmount();
+        gameStore.setTableStage(TableStage.WAITING_BET);
+      } else if (gameStore.tableStage == TableStage.NPC_ROLLING) {
+        startRoll();
+      } else if (gameStore.tableStage == TableStage.PLAYER_SHOW_RESULT) {
+        setTimeout(() => {
+            gameStore.setTableStage(TableStage.SHOW_WINNER);
+        }, 2000);
+      } else if (gameStore.tableStage == TableStage.SHOW_WINNER) {
+        const npcSum = gameStore.npcDiceResult[0] + gameStore.npcDiceResult[1];
+        const playerSum = gameStore.playerDiceResult[0] + gameStore.playerDiceResult[1];
+        const didPlayerWin = playerSum > npcSum;
+        const delta = gameStore.bettingAmount * 2;
+        store.openDialog({
+            title: (didPlayerWin ? "Winner :)" : "Loser :("),
+            content: (
+              <GameWinner didPlayerWin={didPlayerWin} moneyDelta={delta} />
+            ),
+            onClose: () => {
+                gameStore.setTableStage(TableStage.WAIT_NEXT_NPC);
+            },
+          });
+      }
   }, [gameStore.tableStage]);
 
   useEffect(() => {
@@ -105,17 +132,17 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
     document.addEventListener("keyup", (event) => {
       keyUp(event.key);
     });
-    autorun(() => {
-      console.log("new stage: ", gameStore.tableStage);
-      settableStage(gameStore.tableStage);
-      if (gameStore.tableStage == TableStage.ASK_BET) {
-        askBettingAmount();
-        gameStore.setTableStage(TableStage.WAITING_BET);
-      } else if (gameStore.tableStage == TableStage.NPC_ROLLING) {
-        startRoll();
-      } else if (gameStore.tableStage == TableStage.SHOW_WINNER) {
-      }
-    });
+    // autorun(() => {
+    //   console.log("new stage: ", gameStore.tableStage);
+    //   settableStage(gameStore.tableStage);
+    //   if (gameStore.tableStage == TableStage.ASK_BET) {
+    //     askBettingAmount();
+    //     gameStore.setTableStage(TableStage.WAITING_BET);
+    //   } else if (gameStore.tableStage == TableStage.NPC_ROLLING) {
+    //     startRoll();
+    //   } else if (gameStore.tableStage == TableStage.SHOW_WINNER) {
+    //   }
+    // });
     autorun(() => {
       // console.log(gameStore.npcDiceResult);
       let result = gameStore.npcDiceResult;
@@ -156,7 +183,11 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
       setdiceAnimStage(DiceAnimStage.CUP_FLIP);
       setTimeout(() => {
         setdiceAnimStage(DiceAnimStage.SHOW_DICE);
-        gameStore.setTableStage(TableStage.PLAYER_WAIT_INPUT);
+        if(gameStore.tableStage == TableStage.NPC_ROLLING) {
+            gameStore.setTableStage(TableStage.PLAYER_WAIT_INPUT);
+        } else {
+            gameStore.setTableStage(TableStage.PLAYER_SHOW_RESULT);
+        }
       }, 1500);
     }, 1500);
   };
@@ -183,14 +214,14 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
 
   function onLeftClick() {
     console.log("stage from gamestore: ", gameStore.tableStage);
-    console.log("stage from state: ", tableStage);
-    if (tableStage == TableStage.PLAYER_WAIT_INPUT) {
+    // console.log("stage from state: ", tableStage);
+    if (gameStore.tableStage == TableStage.PLAYER_WAIT_INPUT) {
       gameStore.shouldCheat = false;
       gameStore.tableStage = TableStage.PLAYER_WILL_ROLL;
     }
   }
   const onRightClick = () => {
-    if (tableStage == TableStage.PLAYER_WAIT_INPUT) {
+    if (gameStore.tableStage == TableStage.PLAYER_WAIT_INPUT) {
       gameStore.shouldCheat = true;
       gameStore.tableStage = TableStage.PLAYER_WILL_ROLL;
     }
@@ -242,8 +273,8 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
   const sitDown = () => {
     let locationInStreet = playerLocation - backgroundLocation;
     console.log("location: ", locationInStreet);
-    if (locationInStreet > 571 && locationInStreet < 7741) {
-      // TODO: move to the board screen
+    if (locationInStreet > 571 && locationInStreet < 741) {
+        gameStore.stage = Stage.TABLE;
       console.log("sit");
     }
   };
