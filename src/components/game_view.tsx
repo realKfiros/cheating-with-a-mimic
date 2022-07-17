@@ -124,6 +124,7 @@ const styleGameView = css`
     left: 318px;
     top: 145px;
     color:gold;
+    text-shadow: 1px 2px 2px #45283c;
     z-index: 5;
   }
   .hungerImage{
