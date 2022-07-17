@@ -15,6 +15,8 @@ import { css } from "@emotion/react";
 const App = observer(() => {
   const [ratio, setRatio] = useState(0);
   const [currentPage, setCurrentPage] = useState("main_menu");
+  const [backgroundLocation, setBackgroundLocation] = useState(-384);
+
   const size = useWindowSize();
   function useWindowSize() {
     useEffect(() => {
@@ -43,15 +45,24 @@ const App = observer(() => {
 	overflow:hidden;
 	position: relative;
 
+	.spriteObject {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+
     .BackgroundTexture {
-      height: 100%;
+      /* height: 100%;
       width: auto;
       margin-left: auto;
       margin-right: auto;
       position: absolute;
-      z-index: 0;
+      z-index: 0; */
+      left: ${backgroundLocation}px;
     }
-    .ForegroundElements {
+
+    .ForegroundElements, .backgroundTextureContainer {
       position: absolute;
       z-index: 1;
       width: 384px;
@@ -66,12 +77,14 @@ const App = observer(() => {
   return (
     <div className="App">
       <div className="GameCanvas" css={styleGameCanvas}>
-        <img className="BackgroundTexture" src={mainBackground}></img>
+		<div className="backgroundTextureContainer">
+	    	<img className="spriteObject BackgroundTexture" src={mainBackground}></img>
+		</div>
         <div className="ForegroundElements">
           {currentPage == "main_menu" && <MainMenu onStart={()=>{setCurrentPage("game_view")}}/>}
 		  <GameContext.Provider value={new GameStore()}>
 			{currentPage == "butcher_menu" && <ButcherMenu />}
-            {currentPage == "game_view" && <GameView showButcher={()=>{setCurrentPage("butcher_menu")}}/>}
+            {currentPage == "game_view" && <GameView setBackgroundLocation={(location)=>setBackgroundLocation(location)} backgroundLocation={backgroundLocation} showButcher={()=>{setCurrentPage("butcher_menu")}}/>}
           </GameContext.Provider>
         </div>
       </div>
