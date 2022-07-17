@@ -44,6 +44,8 @@ export class GameStore implements GameStoreProps
     {name: "null",price: 0,hunger_fulfillment: 0,image: "",}
 ];
 
+    @observable npcLocations = [randomNumber(0, 800), randomNumber(0, 800),
+                                randomNumber(0, 800), randomNumber(0, 800)];
 
     constructor()
     {
@@ -127,6 +129,20 @@ export class GameStore implements GameStoreProps
         }
     }
 
+    handleNPCMovement = () => {
+        for (let i = 0; i < 2; i++){
+            this.npcLocations[i] -= 0.1;
+            if (this.npcLocations[i] < -65)
+                this.npcLocations[i] = 800;
+        }
+        for (let i = 2; i < 4; i++){
+            this.npcLocations[i] += 0.1;
+            if (this.npcLocations[i] > 800){
+                this.npcLocations[i] = -65;
+            }
+        }
+    }
+
     @action
     buyMeatItems = (indices:number[]) => {
 
@@ -196,6 +212,7 @@ export class GameStore implements GameStoreProps
             //
         }
         else if (this.stage == Stage.STREET){
+            this.handleNPCMovement();
             
         }
         else if (this.stage == Stage.BUTCHER_SHOP){
@@ -204,7 +221,6 @@ export class GameStore implements GameStoreProps
         else if (this.stage == Stage.UPGRADE_SHOP){
             
         }
-
         
         this.handleHunger();
         
