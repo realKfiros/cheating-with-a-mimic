@@ -182,6 +182,7 @@ export const GameView: FC<GameViewProps> = observer(
         }
     }, [gameStore.stage])
     useEffect(() => {
+
       document.addEventListener("keydown", (event) => {
         if (!event.repeat) keyDown(event.key);
       });
@@ -266,6 +267,7 @@ export const GameView: FC<GameViewProps> = observer(
       setTimeout(() => {
         setdiceAnimStage(DiceAnimStage.CUP_FLIP);
         setTimeout(() => {
+            setDiceRotations([randomNumber(0,4)*90,randomNumber(0,4)*90]);
           setdiceAnimStage(DiceAnimStage.SHOW_DICE);
           if (gameStore.tableStage == TableStage.NPC_ROLLING) {
             gameStore.setTableStage(TableStage.PLAYER_WAIT_INPUT);
@@ -424,8 +426,8 @@ export const GameView: FC<GameViewProps> = observer(
             )}
             {diceAnimStage == DiceAnimStage.SHOW_DICE && (
               <>
-                <img className="spriteObject dieOne" style={{transform:`rotate(${randomNumber(0,4)}deg)`}} src={diceFiles[0]}></img>
-                <img className="spriteObject dieTwo" style={{transform:`rotate(${randomNumber(0,4)}deg)`}} src={diceFiles[1]}></img>
+                <img className="spriteObject dieOne" style={{transform:`rotate(${diceRotations[0]}deg)`}} src={diceFiles[0]}></img>
+                <img className="spriteObject dieTwo" style={{transform:`rotate(${diceRotations[1]}deg)`}} src={diceFiles[1]}></img>
               </>
             )}
 

@@ -149,7 +149,7 @@ export class GameStore implements GameStoreProps
     }
 
     getRandomStock = () => {
-        return possibleStock[randomNumber(0,possibleStock.length)] as meatItem
+        return possibleStock[randomNumber(0,possibleStock.length-1)] as meatItem
     }
 
     @action
