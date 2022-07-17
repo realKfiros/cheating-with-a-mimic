@@ -158,25 +158,22 @@ export class GameStore implements GameStoreProps
                 // console.log("matomatos")
                 // this.tableStage = TableStage.PLAYER_SHOW_RESULT;
             } else if (this.tableStage == TableStage.PLAYER_SHOW_RESULT) {
-                window.alert("PLAYER DICE: "+this.playerDiceResult[0] +", "+ this.playerDiceResult[1]);
-                this.tableStage = TableStage.SHOW_WINNER;
+                
             } else if (this.tableStage == TableStage.SHOW_WINNER) {
                 let npcSum = this.npcDiceResult[0] + this.npcDiceResult[1];
                 let playerSum = this.playerDiceResult[0] + this.playerDiceResult[1];
 
                 
-                if(playerSum > npcSum) {
-                    window.alert("You won");
-                } else if (playerSum < npcSum) {
-                    window.alert("You lost");
-                } else {
-                    window.alert("Its a tie");
-                }
-                this.handleGameResult(this.shouldCheat, playerSum > npcSum, this.bettingAmount);
+                // if(playerSum > npcSum) {
+                //     window.alert("You won");
+                // } else if (playerSum < npcSum) {
+                //     window.alert("You lost");
+                // } else {
+                //     window.alert("Its a tie");
+                // }
+                // this.handleGameResult(this.shouldCheat, playerSum > npcSum, this.bettingAmount);
 
-                this.tableStage = TableStage.WAIT_NEXT_NPC;
-            } else if (this.tableStage == TableStage.WAIT_WINNER_DIALOG_CLOSE) {
-
+                // this.tableStage = TableStage.WAIT_NEXT_NPC;
             }
             
             //--goto start--
