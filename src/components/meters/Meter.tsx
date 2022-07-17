@@ -23,6 +23,7 @@ const Meter:FC<MeterProps> = ({value, label}) => {
         width:8px;
         height:102px;
         background-color: brown;
+        box-shadow: 1px 1px 2px #45283c;
         .meterBorder{
             width: 6px;
             height: ${height}px;
@@ -30,6 +31,7 @@ const Meter:FC<MeterProps> = ({value, label}) => {
             bottom:1px;
             left:1px;
             position:absolute;
+            /* text-shadow: 1px 2px 2px #45283c; */
         }
         .meterTitle {
             text-align:center;
