@@ -40,7 +40,7 @@ export class GameStore implements GameStoreProps
     @observable tableStage = TableStage.WAIT_NEXT_NPC;
     @observable npcDiceResult = [0, 0];
     @observable playerDiceResult = [0,0];
-    @observable bettingAmount = 0;
+    @observable _bettingAmount = 0;
     @observable shouldCheat = false;
     @observable butcheryTimer = 0;
     @observable meatItems = [
@@ -102,7 +102,7 @@ export class GameStore implements GameStoreProps
         
         if (playerSum > npcSum){
             // earn money
-            this.money += this.bettingAmount*2;
+            this.money += this._bettingAmount*2;
             if (this.shouldCheat)
                 //handle sus meter
                 this.suspicion += 5;
@@ -224,6 +224,20 @@ export class GameStore implements GameStoreProps
         }
     }
 
+    @computed
+    get bettingAmount()
+    {
+        return this._bettingAmount;
+    }
+
+    set bettingAmount(bettingAmount)
+    {
+        if (bettingAmount > this.money)
+            this._bettingAmount = this.money;
+        else
+            this._bettingAmount = bettingAmount;
+    }
+
     @action
     gameLoop()
     {
@@ -232,13 +246,19 @@ export class GameStore implements GameStoreProps
                 //do logic to spawn next NPC
                 this.tableStage = TableStage.ASK_BET;
             } else if (this.tableStage == TableStage.NPC_WILL_ROLL) {
-                this.money -= this.bettingAmount;
-                let res = this.throwDice(); //NPC throws dice - gets some number
-                // this.npcDiceResult[0] = res[0];
-                // this.npcDiceResult[1] = res[1];
-                this.npcDiceResult = res;
-                this.setTableStage(TableStage.NPC_ROLLING);
-                console.log("NPC rolled ", this.npcDiceResult);
+                if (this._bettingAmount < 0)
+                    mainStoreInstance().openDialog({
+                        title: 'Can\'t bet that amount',
+                        content: 'You literally just bet our money!'
+                    } as any);
+                else
+                {
+                    this.money -= this._bettingAmount;
+                    let res = this.throwDice(); //NPC throws dice - gets some number
+                    this.npcDiceResult = res;
+                    this.setTableStage(TableStage.NPC_ROLLING);
+                    console.log("NPC rolled ", this.npcDiceResult);
+                }
             } else if (this.tableStage == TableStage.PLAYER_WILL_ROLL) {
                 let NPCSum = 0;
                 if(this.shouldCheat) {
