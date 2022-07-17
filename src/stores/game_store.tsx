@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeObservable, observable, action, computed, autorun, runInAction } from 'mobx';
 import {Stage, TableStage, randomNumber, meatItem, BUTCHERY_TIMER, possibleStock} from '../common';
+import {mainStoreInstance} from "../store";
 
 
 export const GameContext = React.createContext<any>(null);
@@ -23,6 +24,7 @@ interface GameStoreProps
     shouldCheat: boolean;
     butcheryTimer: number;
     meatItems: meatItem[];
+    selectedItems: Set<number>;
 }
 
 export class GameStore implements GameStoreProps
@@ -41,10 +43,12 @@ export class GameStore implements GameStoreProps
     @observable bettingAmount = 0;
     @observable shouldCheat = false;
     @observable butcheryTimer = 0;
-    @observable meatItems = [{name: "null",price: 0,hunger_fulfillment: 0,image: "",},
-    {name: "null",price: 0,hunger_fulfillment: 0,image: "",},
-    {name: "null",price: 0,hunger_fulfillment: 0,image: "",}
-];
+    @observable meatItems = [
+        {name: "null",price: 0,hunger_fulfillment: 0,image: "",},
+        {name: "null",price: 0,hunger_fulfillment: 0,image: "",},
+        {name: "null",price: 0,hunger_fulfillment: 0,image: "",}
+    ];
+    @observable selectedItems = new Set<number>();
 
     @observable npcLocations = [randomNumber(0, 800), randomNumber(0, 800),
                                 randomNumber(0, 800), randomNumber(0, 800)];
@@ -146,9 +150,40 @@ export class GameStore implements GameStoreProps
         }
     }
 
-    @action
-    buyMeatItems = (indices:number[]) => {
+    @action.bound
+    toggleMeatItem(index: number)
+    {
+        if (this.selectedItems.has(index))
+            this.selectedItems.delete(index);
+        else
+            this.selectedItems.add(index);
+    }
 
+    @action
+    buyMeatItems = () =>
+    {
+        const combinedPrice = [...this.selectedItems].reduce((sum, index) => sum + this.meatItems[index].price, 0);
+        const combinedHunger = this.hunger + [...this.selectedItems].reduce((sum, index) => sum + this.meatItems[index].hunger_fulfillment, 0);
+        if (combinedPrice > this.money)
+            mainStoreInstance().openDialog({
+                title: 'Can\'t buy items!',
+                content: 'Not enough money :('
+            } as any);
+        else if (combinedHunger > 100)
+            mainStoreInstance().openDialog({
+                title: 'Can\'t buy items!',
+                content: 'The dices aren\'t hungry'
+            } as any);
+        else
+            this.selectedItems.forEach(index =>
+            {
+                let meatItem = this.meatItems[index];
+                this.hunger += meatItem.hunger_fulfillment;
+                this.money -= meatItem.price;
+                this.meatItems = this.meatItems.filter(item => item !== meatItem);
+                this.meatItems.push(this.getRandomStock());
+            });
+        this.selectedItems.clear();
     }
 
     getRandomStock = () => {
@@ -161,19 +196,20 @@ export class GameStore implements GameStoreProps
     }
 
     @action
-    butcheryLoop = () =>{
-        console.log(this.butcheryTimer);
+    butcheryLoop = () =>
+    {
         this.butcheryTimer -=1;
-        if(this.butcheryTimer<=0) {
+        if(this.butcheryTimer<=0)
+        {
             this.butcheryTimer = BUTCHERY_TIMER;
             const items = [this.getRandomStock(),this.getRandomStock(),this.getRandomStock()];
+            this.selectedItems.clear();
             console.log("new items: ",items);
             this.setMeatItems(items);
         }
-        if (this.running) {
-            setTimeout(() => {
-                this.butcheryLoop();
-            }, 1000);
+        if (this.running)
+        {
+            setTimeout(() => this.butcheryLoop(), 1000);
 
         }
     }
