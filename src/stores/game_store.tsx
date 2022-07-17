@@ -82,8 +82,10 @@ export class GameStore implements GameStoreProps
                     diceResults[1] = randomNumber(1, 6);
                     sum = diceResults[0] + diceResults[1];
                 }
+                this.hunger -= 10;
             } else if(lowestSum === 12) {
                 diceResults = [6,6];
+                this.hunger -= 10;
             } else {
                 diceResults[0] = randomNumber(1, 6);
                 diceResults[1] = randomNumber(1, 6);
