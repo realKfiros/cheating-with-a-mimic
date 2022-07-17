@@ -103,22 +103,24 @@ const styleGameView = css`
   .hungerBar {
     left: 320px;
     top: 45px;
+    z-index: 5;
   }
   .susBar {
     left: 350px;
     top: 45px;
+    z-index: 5;
   }
   .moneyView {
     left: 318px;
     top: 145px;
     color:gold;
+    z-index: 5;
   }
 `;
 
 export const GameView: FC<GameViewProps> = observer(
   ({ showButcher, backgroundLocation, setBackgroundLocation, pause }) => {
     var [playerLocation, setPlayerLocation] = useState(192);
-    var [npcsLocations, setNPCSLocations] = useState([-5, 5, -5, 5]);
     //   var [backgroundLocation, setBackgroundLocation] = useState(-384);
 
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
