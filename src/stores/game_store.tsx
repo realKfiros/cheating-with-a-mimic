@@ -13,6 +13,7 @@ interface GameStoreProps
     suspicion: number;
     money: number;
     running: boolean;
+    lost: boolean;
     stage: Stage;
     timeOfDay: number;
     tableStage: TableStage;
@@ -30,6 +31,7 @@ export class GameStore implements GameStoreProps
     @observable suspicion = 0;
     @observable money = 100;
     @observable running = true;
+    @observable lost = false;
     @observable stage = Stage.STREET;
     @observable timeOfDay = 0;
 
@@ -126,6 +128,7 @@ export class GameStore implements GameStoreProps
         if (this.hunger < 0){
             console.log("you've ran out of hunger");
             this.running = false;
+            this.lost = true;
         }
     }
 
