@@ -111,6 +111,7 @@ const App = observer(() => {
                 showButcher={() => {
                   setCurrentPage("butcher_menu");
                 }}
+				showDeathScreen={()=>{setCurrentPage("death_screen");}}
                 pause={() => setCurrentPage("pause_menu")}
               />
             )}

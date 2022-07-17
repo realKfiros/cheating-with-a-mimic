@@ -128,9 +128,17 @@ export class GameStore implements GameStoreProps
     }
 
     handleHunger = () => {
-        this.hunger -= 0.001;
+        this.hunger -= 0.003;
         if (this.hunger < 0){
             console.log("you've ran out of hunger");
+            this.running = false;
+            this.lost = true;
+        }
+    }
+    handleSus = () => {
+        // this.hunger -= 0.003;
+        if (this.suspicion >= 100){
+            // console.log("you've nger");
             this.running = false;
             this.lost = true;
         }
@@ -262,6 +270,8 @@ export class GameStore implements GameStoreProps
         }
         
         this.handleHunger();
+        this.handleSus();
+
         
         if (this.running) {
             setTimeout(() => {
