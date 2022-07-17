@@ -20,10 +20,10 @@ const GameWinner:FC<GameWinnerProps> = ({didPlayerWin,moneyDelta}) => {
   return (
     <div css={GameWinnerStyle}>
       {didPlayerWin &&
-      <div>You won, and earned <span className="coinsText">${moneyDelta}</span> coins.</div>
+      <div>You won, and earned <span className="coinsText">${moneyDelta}</span>.</div>
       }
       {!didPlayerWin &&
-      <div>Opponent won, and you lost <span className="coinsText">${moneyDelta}</span> coins.</div>
+      <div>Opponent won, and you lost <span className="coinsText">${moneyDelta}</span>.</div>
       }
     </div>
   );

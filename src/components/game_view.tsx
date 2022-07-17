@@ -15,6 +15,7 @@ import dice5 from "../assets/Dice5.png";
 import dice6 from "../assets/Dice6.png";
 import streetPlayer from "../assets/streetPlayer.png";
 import mainBackground from "../assets/Street-BackGround.png";
+import rollies from "../assets/sounds/dice_rolling.wav";
 
 import BettingAmount from "./modals/BettingAmount";
 import GameWinner from "./modals/GameWinner";
@@ -28,11 +29,13 @@ enum DiceAnimStage {
 }
 interface GameViewProps {
   showButcher: () => void;
+  backgroundLocation: number;
+  setBackgroundLocation: (location:number) => void;
 }
 
-export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
+export const GameView: FC<GameViewProps> = observer(({ showButcher, backgroundLocation, setBackgroundLocation }) => {
   var [playerLocation, setPlayerLocation] = useState(192);
-  var [backgroundLocation, setBackgroundLocation] = useState(-384);
+//   var [backgroundLocation, setBackgroundLocation] = useState(-384);
   const styleGameView = css`
     left: 0;
     .tableView {
@@ -40,6 +43,7 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
       width: 100%;
       height: 100%;
     }
+    
     .spriteObject {
       position: absolute;
       top: 0;
@@ -74,9 +78,9 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
       top: 80px;
       left: 190px;
     }
-    .BackgroundTexture {
+    /* .BackgroundTexture {
       left: ${backgroundLocation}px;
-    }
+    } */
 
     .streetPlayer {
       top: 120px;
@@ -178,7 +182,9 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
   };
 
   const startRoll = () => {
+    const audio = new Audio(rollies);
     setdiceAnimStage(DiceAnimStage.SHOW_CUP_CONTENT);
+    audio.play();
     setTimeout(() => {
       setdiceAnimStage(DiceAnimStage.CUP_FLIP);
       setTimeout(() => {
@@ -346,7 +352,7 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
       )}
       {gameStore.stage == Stage.STREET && (
         <div className="streetView" onKeyDown={(e) => console.log("ass")} tabIndex={0}>
-          <img className="spriteObject BackgroundTexture" src={mainBackground}></img>
+          {/* <img className="spriteObject BackgroundTexture" src={mainBackground}></img> */}
           <div className="characters">
             <img className="spriteObject streetPlayer" src={streetPlayer}></img>
             <div className="NPCs"></div>
