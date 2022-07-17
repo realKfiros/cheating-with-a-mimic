@@ -475,19 +475,19 @@ export const GameView: FC<GameViewProps> = observer(
               ></img>
               <div className="NPCs">
                 <img className="spriteObject womanNPC"
-                  style={{left: gameStore.npcLocations[0]}}
+                  style={{left: gameStore.npcLocations[0]+backgroundLocation}}
                   src={womanNPC}>
                 </img>
                 <img className="spriteObject manNPC flipped"
-                  style={{left: gameStore.npcLocations[1]}}
+                  style={{left: gameStore.npcLocations[1]+backgroundLocation}}
                   src={manNPC}>
                 </img>
                 <img className="spriteObject manNPC"
-                  style={{left: gameStore.npcLocations[2]}}
+                  style={{left: gameStore.npcLocations[2]+backgroundLocation}}
                   src={manNPC}>
                 </img>
                 <img className="spriteObject womanNPC flipped"
-                  style={{left: gameStore.npcLocations[3]}}
+                  style={{left: gameStore.npcLocations[3]+backgroundLocation}}
                   src={womanNPC}>
                 </img>
 
