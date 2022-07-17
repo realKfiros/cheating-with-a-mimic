@@ -101,6 +101,7 @@ const styleGameView = css`
     top: 95px;
     z-index: 3;
   }
+  
 
   .hungerBar {
     left: 320px;
@@ -498,7 +499,7 @@ export const GameView: FC<GameViewProps> = observer(
               </div>
             </div>
             <div className="streetObjects">
-              <div className="gametable"></div>
+            
             </div>
           </div>
         )}
