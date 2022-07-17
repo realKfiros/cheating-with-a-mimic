@@ -2,17 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { AppContext, Store } from "./store";
+import {AppContext, mainStoreInstance} from "./store";
 import { configure } from "mobx";
 
 configure({
   useProxies: "never",
 });
 
+let mobx_store = mainStoreInstance(true);
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
   <div onContextMenu={(e) => e.preventDefault()}>
-    <AppContext.Provider value={new Store() as any}>
+    <AppContext.Provider value={mobx_store}>
       <App />
     </AppContext.Provider>
   </div>
