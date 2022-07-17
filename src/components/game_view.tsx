@@ -17,6 +17,7 @@ import streetPlayer from "../assets/streetPlayer.png";
 import womanNPC from "../assets/NPCs/gifs/NPC-Woman_Walk.gif";
 import manNPC from "../assets/NPCs/gifs/NPC-Man_Walk.gif";
 import mainBackground from "../assets/Street-BackGround.png";
+import hungerImage from "../assets/HUNGER.png";
 import rollies from "../assets/sounds/dice_rolling.wav";
 import Meter from "../components/meters/Meter";
 import MenuButton from "./menu_button";
@@ -119,6 +120,10 @@ const styleGameView = css`
     top: 145px;
     color:gold;
     z-index: 5;
+  }
+  .hungerImage{
+    position:absolute;
+    top: -10px;
   }
 `;
 
@@ -464,10 +469,7 @@ export const GameView: FC<GameViewProps> = observer(
         )}
         {gameStore.stage == Stage.STREET && (
           <div
-            className="streetView"
-            onKeyDown={(e) => console.log("ass")}
-            tabIndex={0}
-          >
+            className="streetView">
             {/* <img className="spriteObject BackgroundTexture" src={mainBackground}></img> */}
             <div className="characters">
               <img
@@ -501,7 +503,8 @@ export const GameView: FC<GameViewProps> = observer(
           </div>
         )}
         <div className="spriteObject hungerBar">
-          <Meter value={gameStore.hunger} label="🍖" />
+        <img className="spriteObject hungerImage" src={hungerImage}></img>
+          <Meter value={gameStore.hunger} label="" />
         </div>
         <div className="spriteObject susBar">
           <Meter value={gameStore.suspicion} label="?" />
