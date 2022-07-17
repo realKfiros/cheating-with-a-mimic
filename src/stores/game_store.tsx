@@ -132,13 +132,13 @@ export class GameStore implements GameStoreProps
     handleNPCMovement = () => {
         for (let i = 0; i < 2; i++){
             this.npcLocations[i] -= 0.1;
-            if (this.npcLocations[i] < -65)
-                this.npcLocations[i] = 800;
+            if (this.npcLocations[i] < -40)
+                this.npcLocations[i] = 1152;
         }
         for (let i = 2; i < 4; i++){
             this.npcLocations[i] += 0.1;
-            if (this.npcLocations[i] > 800){
-                this.npcLocations[i] = -65;
+            if (this.npcLocations[i] > 1152){
+                this.npcLocations[i] = 0;
             }
         }
     }
