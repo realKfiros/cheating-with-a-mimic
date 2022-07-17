@@ -15,29 +15,29 @@ const styleDialog = css`
 	align-items: center;
 	justify-content: center;
 	z-index: 1000;
-	
+
 	.content {
 		background-color: #fff;
 		color: #0D0D0D;
 		padding: 10px;
 	}
-	
+
 	.header, .footer {
 		padding: 10px
 	}
-	
+
 	.title {
 		font-size: 20px;
 		margin: 0;
 	}
-	
+
 	.body {
 		padding: 10px;
 		border-top: 1px solid #eee;
 		border-bottom: 1px solid #eee;
 		text-align: start;
 	}
-	
+
 	.footer {
 		> button {
 			margin: 0 5px;

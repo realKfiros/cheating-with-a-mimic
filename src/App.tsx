@@ -44,20 +44,20 @@ const styleGameCanvas = css`
 	.streetTable {
 		top: 160px;
 		z-index: 3;
-		
+
 		> img {
 			transform: translate(25px, -35px);
 			position: absolute;
 		}
-		
+
 		> .table {
 			z-index: 3;
 		}
-		
+
 		> .clown {
 			z-index: 2;
 		}
-		
+
 		> .chair {
 			z-index: 1;
 		}
@@ -79,7 +79,7 @@ const App = observer(() =>
 	const [ratio, setRatio] = useState(0);
 	const [currentPage, setCurrentPage] = useState("main_menu");
 	const [backgroundLocation, setBackgroundLocation] = useState(-384);
-	const [gameStore] = useState(new GameStore());
+	const [gameStore, setGameStore] = useState<GameStore>(new GameStore());
 
 	useWindowSize();
 
@@ -100,8 +100,14 @@ const App = observer(() =>
 
 	useEffect(() =>
 	{
+		if (currentPage === 'game_view' && gameStore.lost)
+			setGameStore(new GameStore());
+	}, [currentPage])
+
+	useEffect(() =>
+	{
 		gameStore.startLoops();
-	}, []);
+	}, [gameStore]);
 
 	return (
 		<div className="App">
@@ -127,11 +133,8 @@ const App = observer(() =>
 					)}
 					{currentPage == "death_screen" && (
 						<DeathScreen
-							onStart={() =>
-							{
-								setCurrentPage("game_view");
-							}}
-							toMain={() => setCurrentPage("main_menu")}></DeathScreen>
+							onStart={() => setCurrentPage("game_view")}
+							toMain={() => setCurrentPage("main_menu")}/>
 					)}
 					<GameContext.Provider value={gameStore}>
 						{currentPage == "butcher_menu" && (
@@ -145,7 +148,10 @@ const App = observer(() =>
 								{
 									setCurrentPage("butcher_menu");
 								}}
-								showDeathScreen={()=>{setCurrentPage("death_screen");}}pause={() => setCurrentPage("pause_menu")}
+								showDeathScreen={() =>
+								{
+									setCurrentPage("death_screen");
+								}} pause={() => setCurrentPage("pause_menu")}
 							/>
 						)}
 						{currentPage == "pause_menu" && (
