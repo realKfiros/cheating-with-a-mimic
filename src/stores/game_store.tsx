@@ -100,7 +100,7 @@ export class GameStore implements GameStoreProps
         }
         console.log(diceResults);
         if(isPlayer && this.shouldCheat) {
-            const officerDist = Math.abs(this.officerLocation - 600);
+            const officerDist = Math.abs(this.officerLocation - 650);
             if(officerDist<300) {
                 this.suspicion += (20 * ((300-officerDist)/300))
                 console.log("adding to suspicion because of officer", (20 * ((100-officerDist)/100)))
@@ -184,7 +184,7 @@ export class GameStore implements GameStoreProps
 
     @action
     officerLoop = () => {
-        // console.log(this.officerLocation);
+        console.log(this.officerLocation);
         if (this.officerDirection=="right"){
             this.officerLocation -= 0.2;
             if (this.officerLocation < -40)
