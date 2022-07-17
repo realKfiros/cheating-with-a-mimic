@@ -84,19 +84,19 @@ const styleGameView = css`
   }
 
   .showCupContent {
-    top: 80px;
+    top: 91px;
     left: 150px;
   }
   .cupFlip {
-    top: 80px;
+    top: 91px;
     left: 150px;
   }
   .dieOne {
-    top: 50px;
+    top: 75px;
     left: 150px;
   }
   .dieTwo {
-    top: 80px;
+    top: 110px;
     left: 190px;
   }
 
