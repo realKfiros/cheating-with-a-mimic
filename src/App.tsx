@@ -8,6 +8,7 @@ import { GameContext, GameStore } from "./stores/game_store";
 import { GameView } from "./components/game_view";
 import { Dialog } from "./components/dialog";
 import ButcherMenu from "./components/Menus/ButcherMenu";
+import DeathScreen from "./components/Menus/DeathScreen"
 import PauseMenu from "./components/Menus/PauseMenu";
 import mainBackground from "./assets/Street-BackGround.png";
 import { css } from "@emotion/react";
@@ -75,6 +76,7 @@ const App = observer(() => {
   return (
     <div className="App">
       <div className="GameCanvas" css={styleGameCanvas}>
+      
         <div className="backgroundTextureContainer" style={{transform:`scale(${ratio})`}}>
           <img className="spriteObject BackgroundTexture" style={{left:`${backgroundLocation}px`}} src={mainBackground}></img>
         </div>
@@ -85,6 +87,13 @@ const App = observer(() => {
                 setCurrentPage("game_view");
               }}
             />
+          )}
+          {currentPage == "death_screen" && (
+            <DeathScreen 
+            onStart={() => {
+              setCurrentPage("game_view");
+            }} 
+            toMain={() => setCurrentPage("main_menu")} ></DeathScreen>
           )}
           <GameContext.Provider value={gameStore}>
             {currentPage == "butcher_menu" && (
