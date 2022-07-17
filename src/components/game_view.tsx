@@ -273,7 +273,7 @@ export const GameView: FC<GameViewProps> = observer(({ showButcher }) => {
   const sitDown = () => {
     let locationInStreet = playerLocation - backgroundLocation;
     console.log("location: ", locationInStreet);
-    if (locationInStreet > 571 && locationInStreet < 7741) {
+    if (locationInStreet > 571 && locationInStreet < 741) {
         gameStore.stage = Stage.TABLE;
       console.log("sit");
     }
