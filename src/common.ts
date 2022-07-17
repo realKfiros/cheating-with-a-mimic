@@ -32,7 +32,6 @@ export enum TableStage
     PLAYER_ROLLING,
     PLAYER_SHOW_RESULT,
     SHOW_WINNER,
-    WAIT_WINNER_DIALOG_CLOSE,
     
 };
 
