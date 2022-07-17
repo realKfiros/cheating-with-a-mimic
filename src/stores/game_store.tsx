@@ -72,21 +72,21 @@ export class GameStore implements GameStoreProps
 
     }
 
-    handleGameResult = (didCheat:boolean, didWin:boolean, moneyBetOn:number) => {
-        if (didWin){
+    handleGameResult = () => {
+        let npcSum = this.npcDiceResult[0] + this.npcDiceResult[1];
+        let playerSum = this.playerDiceResult[0] + this.playerDiceResult[1];
+        
+        if (playerSum > npcSum){
             // earn money
-            this.money += moneyBetOn;
-            console.log("win");
-            if (didCheat)
+            this.money += this.bettingAmount;
+            if (this.shouldCheat)
                 //handle sus meter
-                this.suspicion += 1;
-                console.log("cheat");
+                this.suspicion += 5;
             return true;
         }
         else{
             // lose money
-            console.log("lose");
-            this.money -= moneyBetOn;
+            this.money -= this.bettingAmount;
             return true;
         }
     }
@@ -121,10 +121,7 @@ export class GameStore implements GameStoreProps
             if(this.tableStage == TableStage.WAIT_NEXT_NPC) {
                 //do logic to spawn next NPC
                 this.tableStage = TableStage.ASK_BET;
-            } else if (this.tableStage == TableStage.ASK_BET) {
-                // done in game_view
-            }
-            else if (this.tableStage == TableStage.NPC_WILL_ROLL) {
+            } else if (this.tableStage == TableStage.NPC_WILL_ROLL) {
                 runInAction(() =>
                 {
                     let res = this.throwDice(); //NPC throws dice - gets some number
@@ -133,12 +130,6 @@ export class GameStore implements GameStoreProps
                 });
                 this.setTableStage(TableStage.NPC_ROLLING);
                 console.log(this.npcDiceResult);
-            } else if (this.tableStage == TableStage.NPC_ROLLING) {
-                // do in game_view
-                // this.tableStage = TableStage.NPC_SHOW_RESULT
-            } else if (this.tableStage == TableStage.PLAYER_WAIT_INPUT) {
-                // this.shouldCheat = this.suggestToCheat();
-                // this.tableStage = TableStage.PLAYER_WILL_ROLL;
             } else if (this.tableStage == TableStage.PLAYER_WILL_ROLL) {
                 
                 runInAction(() =>
@@ -154,27 +145,10 @@ export class GameStore implements GameStoreProps
                 // this.playerDiceResult = this.throwDice(true,NPCSum);
                 this.setTableStage(TableStage.PLAYER_ROLLING);
                 console.log("changed stage");
-            } else if (this.tableStage == TableStage.PLAYER_ROLLING) {
-                // console.log("matomatos")
-                // this.tableStage = TableStage.PLAYER_SHOW_RESULT;
-            } else if (this.tableStage == TableStage.PLAYER_SHOW_RESULT) {
-                
-            } else if (this.tableStage == TableStage.SHOW_WINNER) {
-                let npcSum = this.npcDiceResult[0] + this.npcDiceResult[1];
-                let playerSum = this.playerDiceResult[0] + this.playerDiceResult[1];
-
-                
-                // if(playerSum > npcSum) {
-                //     window.alert("You won");
-                // } else if (playerSum < npcSum) {
-                //     window.alert("You lost");
-                // } else {
-                //     window.alert("Its a tie");
-                // }
-                // this.handleGameResult(this.shouldCheat, playerSum > npcSum, this.bettingAmount);
-
-                // this.tableStage = TableStage.WAIT_NEXT_NPC;
             }
+            // } else if (this.tableStage == TableStage.SHOW_WINNER) {
+            //     this.handleGameResult();
+            // }
             
             //--goto start--
             

@@ -16,6 +16,7 @@ import dice6 from "../assets/Dice6.png";
 import streetPlayer from "../assets/streetPlayer.png";
 import mainBackground from "../assets/Street-BackGround.png";
 import rollies from "../assets/sounds/dice_rolling.wav";
+import Meter from "../components/meters/Meter";
 
 import BettingAmount from "./modals/BettingAmount";
 import GameWinner from "./modals/GameWinner";
@@ -88,6 +89,15 @@ export const GameView: FC<GameViewProps> = observer(
         top: 120px;
         left: ${playerLocation}px;
       }
+
+      .hungerBar {
+        left: 320px;
+        top: 65px;
+      }
+      .susBar {
+        left: 350px;
+        top: 65px;
+      }
     `;
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
     const [diceFiles, setdiceFiles] = useState(["matos", "matos"]);
@@ -124,6 +134,7 @@ export const GameView: FC<GameViewProps> = observer(
           content: <GameWinner didPlayerWin={didPlayerWin} moneyDelta={delta} />,
           onClose: () => {
             gameStore.setTableStage(TableStage.WAIT_NEXT_NPC);
+            gameStore.handleGameResult();
           },
         });
       }
@@ -240,7 +251,7 @@ export const GameView: FC<GameViewProps> = observer(
       }
       if (moveDirection == "right") {
         setTimeout(() => {
-          if (playerLocation < 320) {
+          if (playerLocation < 280) {
             setPlayerLocation(playerLocation + 5);
           } else {
             if (backgroundLocation > -768) {
@@ -285,8 +296,6 @@ export const GameView: FC<GameViewProps> = observer(
       }
     };
     const keyDown = (keyValue: string) => {
-      console.log(keyValue);
-
       switch (keyValue) {
         case "ArrowRight":
           console.log("right");
@@ -346,7 +355,7 @@ export const GameView: FC<GameViewProps> = observer(
             <div className="userInterface">
               <div className="exitToStreet"></div>
               <div className="moneySum"></div>
-              {/* <div className='hungerBar'></div> */}
+
               {/* <div className='susMeter'></div> */}
               {/* <div className='cheatButton'></div> */}
             </div>
@@ -364,6 +373,12 @@ export const GameView: FC<GameViewProps> = observer(
             </div>
           </div>
         )}
+        <div className="spriteObject hungerBar">
+          <Meter value={gameStore.hunger} label="🍖" />
+        </div>
+        <div className="spriteObject susBar">
+          <Meter value={gameStore.suspicion} label="?" />
+        </div>
       </div>
     );
   }
