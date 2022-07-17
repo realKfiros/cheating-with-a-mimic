@@ -18,7 +18,7 @@ const bettingAmountStyle = css`
 const BettingAmount:FC<BettingAmountProps> = ({onChange}) => {
   return (
     <div css={bettingAmountStyle}>
-      <input className="betting-field" name="Bet" type="number" onChange={(e)=>{onChange(parseInt(e.target.value))}}/>
+      <input className="betting-field" name="Bet" type="number" autoFocus onChange={(e)=>{onChange(parseInt(e.target.value))}}/>
     </div>
   );
 };
