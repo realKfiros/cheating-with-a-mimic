@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeObservable, observable, action, computed, autorun, runInAction } from 'mobx';
-import {Stage, TableStage, randomNumber, meatItem, BUTCHERY_TIMER, possibleStock} from '../common';
+import {Stage, TableStage, randomNumber, meatItem, BUTCHERY_TIMER, possibleStock, OFFICER_TIMER} from '../common';
 import {mainStoreInstance} from "../store";
 
 
@@ -25,6 +25,9 @@ interface GameStoreProps
     butcheryTimer: number;
     meatItems: meatItem[];
     selectedItems: Set<number>;
+    officerLocation: number;
+    officerTimer: number;
+    officerDirection: string;
 }
 
 export class GameStore implements GameStoreProps
@@ -52,6 +55,9 @@ export class GameStore implements GameStoreProps
 
     @observable npcLocations = [randomNumber(0, 800), randomNumber(0, 800),
                                 randomNumber(0, 800), randomNumber(0, 800)];
+    @observable officerLocation = randomNumber(0, 800);
+    @observable officerTimer = 0;
+    @observable officerDirection = "left";
 
     constructor()
     {
@@ -64,6 +70,7 @@ export class GameStore implements GameStoreProps
     startLoops = () => {
         this.gameLoop();
         this.butcheryLoop();
+        this.officerLoop();
     }
 
     
@@ -92,6 +99,15 @@ export class GameStore implements GameStoreProps
             }
         }
         console.log(diceResults);
+        if(isPlayer && this.shouldCheat) {
+            const officerDist = Math.abs(this.officerLocation - 600);
+            if(officerDist<300) {
+                this.suspicion += (20 * ((300-officerDist)/300))
+                console.log("adding to suspicion because of officer", (20 * ((100-officerDist)/100)))
+            }
+                 
+            this.suspicion += 5;
+        }
         return diceResults;
 
     }
@@ -103,9 +119,15 @@ export class GameStore implements GameStoreProps
         if (playerSum > npcSum){
             // earn money
             this.money += this.bettingAmount*2;
-            if (this.shouldCheat)
+            if (this.shouldCheat){
                 //handle sus meter
-                this.suspicion += 5;
+                // const officerDist = Math.abs(this.officerLocation - 600);
+                // if(officerDist<100) {
+                //     this.suspicion += (20 * ((100-officerDist)/100))
+                // }
+                 
+                // this.suspicion += 5;
+            }
             return true;
         }
         else{
@@ -157,6 +179,38 @@ export class GameStore implements GameStoreProps
             if (this.npcLocations[i] > 1152){
                 this.npcLocations[i] = 0;
             }
+        }
+    }
+
+    @action
+    officerLoop = () => {
+        // console.log(this.officerLocation);
+        if (this.officerDirection=="right"){
+            this.officerLocation -= 0.2;
+            if (this.officerLocation < -40)
+                this.officerLocation = 1152;
+        }
+        if (this.officerDirection=="left"){
+            this.officerLocation += 0.2;
+            if (this.officerLocation > 1152){
+                this.officerLocation = 0;
+            }
+        }
+        this.officerTimer -=0.02;
+        if(this.officerTimer<=0)
+        {
+            this.officerTimer = OFFICER_TIMER;
+            const dir = randomNumber(0,1);
+            if(dir == 0) {
+                this.officerDirection = "left";
+            } else {
+                this.officerDirection = "right";
+            }
+        }
+        if (this.running)
+        {
+            setTimeout(() => this.officerLoop(), 20);
+
         }
     }
 
@@ -261,7 +315,7 @@ export class GameStore implements GameStoreProps
             //
         }
         else if (this.stage == Stage.STREET){
-            this.handleNPCMovement();
+            
             
         }
         else if (this.stage == Stage.BUTCHER_SHOP){
@@ -273,7 +327,7 @@ export class GameStore implements GameStoreProps
         
         this.handleHunger();
         this.handleSus();
-
+        this.handleNPCMovement();
         
         if (this.running) {
             setTimeout(() => {
