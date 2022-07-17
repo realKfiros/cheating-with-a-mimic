@@ -207,17 +207,6 @@ export const GameView: FC<GameViewProps> = observer(
       document.addEventListener("keyup", (event) => {
         keyUp(event.key);
       });
-      // autorun(() => {
-      //   console.log("new stage: ", gameStore.tableStage);
-      //   settableStage(gameStore.tableStage);
-      //   if (gameStore.tableStage == TableStage.ASK_BET) {
-      //     askBettingAmount();
-      //     gameStore.setTableStage(TableStage.WAITING_BET);
-      //   } else if (gameStore.tableStage == TableStage.NPC_ROLLING) {
-      //     startRoll();
-      //   } else if (gameStore.tableStage == TableStage.SHOW_WINNER) {
-      //   }
-      // });
       autorun(() => {
         // console.log(gameStore.npcDiceResult);
         let result = gameStore.npcDiceResult;
@@ -418,14 +407,11 @@ export const GameView: FC<GameViewProps> = observer(
       <div css={styleGameView}>
         {gameStore.stage == Stage.TABLE && (
           <div className="tableView" onClick={() => onLeftClick()} onContextMenu={onRightClick}>
-            <img className="spriteObject gameBoard" src={gameBoard}></img>
-            {/* <img className='spriteObject player' src={tablePlayerImage}></img> */}
+            <img className="spriteObject gameBoard" src={gameBoard} />
             {
               diceAnimStage == DiceAnimStage.SHOW_CUP_CONTENT && (
-                <img className="spriteObject showCupContent" src={playerHandUp}></img>
+                <img className="spriteObject showCupContent" src={playerHandUp}/>
               )
-              // <img className='spriteObject showCupContent' src={playerHandDown}></img>
-              // <img className='spriteObject showCupContent' src={tablePlayerImage}></img>
             }
 
             {diceAnimStage == DiceAnimStage.CUP_FLIP && (
