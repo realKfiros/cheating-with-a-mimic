@@ -64,19 +64,19 @@ const styleGameView = css`
     /* width: auto; */
   }
 
-  .womanNPC{
+  .womanNPC {
     z-index: 4;
     top: 110px;
   }
 
-  .manNPC{
+  .manNPC {
     z-index: 4;
     top: 95px;
   }
 
-  .flipped{
+  .flipped {
     /* z-index: 4; */
-    transform: scaleX(-1)
+    transform: scaleX(-1);
   }
 
   .gameBoard {
@@ -84,11 +84,11 @@ const styleGameView = css`
   }
 
   .showCupContent {
-    top: 50px;
+    top: 80px;
     left: 150px;
   }
   .cupFlip {
-    top: 50px;
+    top: 80px;
     left: 150px;
   }
   .dieOne {
@@ -104,7 +104,6 @@ const styleGameView = css`
     top: 95px;
     z-index: 3;
   }
-  
 
   .hungerBar {
     left: 320px;
@@ -123,15 +122,15 @@ const styleGameView = css`
   .moneyView {
     left: 318px;
     top: 145px;
-    color:gold;
+    color: gold;
     z-index: 5;
   }
-  .hungerImage{
-    position:absolute;
+  .hungerImage {
+    position: absolute;
     top: -10px;
   }
-  .susImage{
-    position:absolute;
+  .susImage {
+    position: absolute;
     top: -10px;
   }
 `;
@@ -143,7 +142,7 @@ export const GameView: FC<GameViewProps> = observer(
 
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
     const [diceFiles, setdiceFiles] = useState(["matos", "matos"]);
-    const [diceRotations, setDiceRotations] = useState([0,0]);
+    const [diceRotations, setDiceRotations] = useState([0, 0]);
     //   const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
     const [moveDirection, setMoveDirection] = useState("none");
     const [lastDirection, setLastDirection] = useState("right");
@@ -151,53 +150,48 @@ export const GameView: FC<GameViewProps> = observer(
     const gameStore = useContext(GameContext);
 
     useEffect(() => {
-        console.log("updated")
-        console.log("new stage in useeffect ", gameStore.tableStage);
+      console.log("updated");
+      console.log("new stage in useeffect ", gameStore.tableStage);
 
-        if (gameStore.tableStage == TableStage.PLAYER_ROLLING) {
-          console.log("playe rolling");
-          startRoll();
-        }
+      if (gameStore.tableStage == TableStage.PLAYER_ROLLING) {
+        console.log("playe rolling");
+        startRoll();
+      }
 
-        console.log("new stage: ", gameStore.tableStage);
-        if (gameStore.tableStage == TableStage.ASK_BET) {
-          askBettingAmount();
-          gameStore.setTableStage(TableStage.WAITING_BET);
-        } else if (gameStore.tableStage == TableStage.NPC_ROLLING) {
-          startRoll();
-        } else if (gameStore.tableStage == TableStage.PLAYER_SHOW_RESULT) {
-          setTimeout(() => {
-            gameStore.setTableStage(TableStage.SHOW_WINNER);
-          }, 2000);
-        } else if (gameStore.tableStage == TableStage.SHOW_WINNER) {
-          const npcSum =
-            gameStore.npcDiceResult[0] + gameStore.npcDiceResult[1];
-          const playerSum =
-            gameStore.playerDiceResult[0] + gameStore.playerDiceResult[1];
-          const didPlayerWin = playerSum > npcSum;
-          const delta = gameStore.bettingAmount;
-          store.openDialog({
-            title: didPlayerWin ? "Winner :)" : "Loser :(",
-            content: (
-              <GameWinner didPlayerWin={didPlayerWin} moneyDelta={delta} />
-            ),
-            onClose: () => {
-              gameStore.setTableStage(TableStage.WAIT_NEXT_NPC);
-              gameStore.handleGameResult();
-            },
-          });
-        }
+      console.log("new stage: ", gameStore.tableStage);
+      if (gameStore.tableStage == TableStage.ASK_BET) {
+        askBettingAmount();
+        gameStore.setTableStage(TableStage.WAITING_BET);
+      } else if (gameStore.tableStage == TableStage.NPC_ROLLING) {
+        startRoll();
+      } else if (gameStore.tableStage == TableStage.PLAYER_SHOW_RESULT) {
+        setTimeout(() => {
+          gameStore.setTableStage(TableStage.SHOW_WINNER);
+        }, 2000);
+      } else if (gameStore.tableStage == TableStage.SHOW_WINNER) {
+        const npcSum = gameStore.npcDiceResult[0] + gameStore.npcDiceResult[1];
+        const playerSum = gameStore.playerDiceResult[0] + gameStore.playerDiceResult[1];
+        const didPlayerWin = playerSum > npcSum;
+        const delta = gameStore.bettingAmount;
+        store.openDialog({
+          title: didPlayerWin ? "Winner :)" : "Loser :(",
+          content: <GameWinner didPlayerWin={didPlayerWin} moneyDelta={delta} />,
+          onClose: () => {
+            gameStore.setTableStage(TableStage.WAIT_NEXT_NPC);
+            gameStore.handleGameResult();
+          },
+        });
+      }
     }, [gameStore.tableStage]);
 
     useEffect(() => {
-        if (gameStore.stage == Stage.TABLE) {
-            gameStore.setTableStage(TableStage.WAIT_NEXT_NPC);
-        } else {
-            gameStore.setTableStage(TableStage.NO_GAME);
-        }
-    }, [gameStore.stage])
+      if (gameStore.stage == Stage.TABLE) {
+        gameStore.setTableStage(TableStage.WAIT_NEXT_NPC);
+      } else {
+        gameStore.setTableStage(TableStage.NO_GAME);
+      }
+    }, [gameStore.stage]);
     useEffect(() => {
-
       document.addEventListener("keydown", (event) => {
         if (!event.repeat) keyDown(event.key);
       });
@@ -256,13 +250,13 @@ export const GameView: FC<GameViewProps> = observer(
           />
         ),
         buttons: [
-            {
-                title: "Exit to street",
-                onClick: () => {
-                  store.closeDialog();
-                  exitBoard();
-                },
-              },
+          {
+            title: "Exit to street",
+            onClick: () => {
+              store.closeDialog();
+              exitBoard();
+            },
+          },
           {
             title: "Bet",
             onClick: () => {
@@ -270,7 +264,6 @@ export const GameView: FC<GameViewProps> = observer(
               gameStore.tableStage = TableStage.NPC_WILL_ROLL;
             },
           },
-          
         ],
       });
     };
@@ -282,7 +275,7 @@ export const GameView: FC<GameViewProps> = observer(
       setTimeout(() => {
         setdiceAnimStage(DiceAnimStage.CUP_FLIP);
         setTimeout(() => {
-            setDiceRotations([randomNumber(0,4)*90,randomNumber(0,4)*90]);
+          setDiceRotations([randomNumber(0, 4) * 90, randomNumber(0, 4) * 90]);
           setdiceAnimStage(DiceAnimStage.SHOW_DICE);
           if (gameStore.tableStage == TableStage.NPC_ROLLING) {
             gameStore.setTableStage(TableStage.PLAYER_WAIT_INPUT);
@@ -329,7 +322,7 @@ export const GameView: FC<GameViewProps> = observer(
     };
 
     const movePlayer = () => {
-    //   console.log("moving ", moveDirection);
+      //   console.log("moving ", moveDirection);
       if (moveDirection == "none") {
         return;
       }
@@ -377,13 +370,13 @@ export const GameView: FC<GameViewProps> = observer(
     const keyDown = (keyValue: string) => {
       switch (keyValue) {
         case "ArrowRight":
-        //   console.log("right");
+          //   console.log("right");
           setMoveDirection("right");
           setLastDirection("right");
           break;
 
         case "ArrowLeft":
-        //   console.log("left");
+          //   console.log("left");
           setMoveDirection("left");
           setLastDirection("left");
           break;
@@ -415,19 +408,12 @@ export const GameView: FC<GameViewProps> = observer(
     return (
       <div css={styleGameView}>
         {gameStore.stage == Stage.TABLE && (
-          <div
-            className="tableView"
-            onClick={() => onLeftClick()}
-            onContextMenu={onRightClick}
-          >
+          <div className="tableView" onClick={() => onLeftClick()} onContextMenu={onRightClick}>
             <img className="spriteObject gameBoard" src={gameBoard}></img>
             {/* <img className='spriteObject player' src={tablePlayerImage}></img> */}
             {
               diceAnimStage == DiceAnimStage.SHOW_CUP_CONTENT && (
-                <img
-                  className="spriteObject showCupContent"
-                  src={playerHandUp}
-                ></img>
+                <img className="spriteObject showCupContent" src={playerHandUp}></img>
               )
               // <img className='spriteObject showCupContent' src={playerHandDown}></img>
               // <img className='spriteObject showCupContent' src={tablePlayerImage}></img>
@@ -438,33 +424,39 @@ export const GameView: FC<GameViewProps> = observer(
             )}
             {diceAnimStage == DiceAnimStage.SHOW_DICE && (
               <>
-                <img className="spriteObject dieOne" style={{transform:`rotate(${diceRotations[0]}deg)`}} src={diceFiles[0]}></img>
-                <img className="spriteObject dieTwo" style={{transform:`rotate(${diceRotations[1]}deg)`}} src={diceFiles[1]}></img>
+                <img
+                  className="spriteObject dieOne"
+                  style={{ transform: `rotate(${diceRotations[0]}deg)` }}
+                  src={diceFiles[0]}></img>
+                <img
+                  className="spriteObject dieTwo"
+                  style={{ transform: `rotate(${diceRotations[1]}deg)` }}
+                  src={diceFiles[1]}></img>
               </>
             )}
 
             <div className="userInterface">
-                <div className="spriteObject boardExitButton">
-              <MenuButton
-                importance
-                text="Exit"
-                onClick={() =>
-                  store.openDialog({
-                    title: "Exit to street",
-                    content: "Are you sure?",
-                    buttons: [
-                      {
-                        title: "Exit",
-                        onClick: () => {
-                          store.closeDialog();
-                          exitBoard();
+              <div className="spriteObject boardExitButton">
+                <MenuButton
+                  importance
+                  text="Exit"
+                  onClick={() =>
+                    store.openDialog({
+                      title: "Exit to street",
+                      content: "Are you sure?",
+                      buttons: [
+                        {
+                          title: "Exit",
+                          onClick: () => {
+                            store.closeDialog();
+                            exitBoard();
+                          },
                         },
-                      },
-                      { title: "Cancel", onClick: store.closeDialog },
-                    ],
-                  })
-                }
-              />
+                        { title: "Cancel", onClick: store.closeDialog },
+                      ],
+                    })
+                  }
+                />
               </div>
               {/* <div className="exitToStreet"></div> */}
               {/* <div className="moneySum"></div> */}
@@ -475,55 +467,55 @@ export const GameView: FC<GameViewProps> = observer(
           </div>
         )}
         {gameStore.stage == Stage.STREET && (
-          <div
-            className="streetView">
+          <div className="streetView">
             {/* <img className="spriteObject BackgroundTexture" src={mainBackground}></img> */}
             <div className="characters">
               <img
                 className="spriteObject streetPlayer"
-                style={{ left: playerLocation, transform:`scaleX(${lastDirection=="right" ? 1 : -1})` }}
-                src={(moveDirection == "left" || moveDirection == "right") ? streetPlayerWalk : streetPlayer}
-              ></img>
+                style={{
+                  left: playerLocation,
+                  transform: `scaleX(${lastDirection == "right" ? 1 : -1})`,
+                }}
+                src={
+                  moveDirection == "left" || moveDirection == "right"
+                    ? streetPlayerWalk
+                    : streetPlayer
+                }></img>
               <div className="NPCs">
-                <img className="spriteObject womanNPC"
-                  style={{left: gameStore.npcLocations[0]+backgroundLocation}}
-                  src={womanNPC}>
-                </img>
-                <img className="spriteObject manNPC flipped"
-                  style={{left: gameStore.npcLocations[1]+backgroundLocation}}
-                  src={manNPC}>
-                </img>
-                <img className="spriteObject manNPC"
-                  style={{left: gameStore.npcLocations[2]+backgroundLocation}}
-                  src={manNPC}>
-                </img>
-                <img className="spriteObject womanNPC flipped"
-                  style={{left: gameStore.npcLocations[3]+backgroundLocation}}
-                  src={womanNPC}>
-                </img>
+                <img
+                  className="spriteObject womanNPC"
+                  style={{ left: gameStore.npcLocations[0] + backgroundLocation }}
+                  src={womanNPC}></img>
+                <img
+                  className="spriteObject manNPC flipped"
+                  style={{ left: gameStore.npcLocations[1] + backgroundLocation }}
+                  src={manNPC}></img>
+                <img
+                  className="spriteObject manNPC"
+                  style={{ left: gameStore.npcLocations[2] + backgroundLocation }}
+                  src={manNPC}></img>
+                <img
+                  className="spriteObject womanNPC flipped"
+                  style={{ left: gameStore.npcLocations[3] + backgroundLocation }}
+                  src={womanNPC}></img>
                 {/* <img className="spriteObject officer"
                   style={{left: gameStore.oppicerLocation[3]+backgroundLocation}}
                   src={womanNPC}>
                 </img> */}
-
               </div>
             </div>
-            <div className="streetObjects">
-            
-            </div>
+            <div className="streetObjects"></div>
           </div>
         )}
         <div className="spriteObject hungerBar">
-            <img className="spriteObject hungerImage" src={hungerImage}></img>
+          <img className="spriteObject hungerImage" src={hungerImage}></img>
           <Meter value={gameStore.hunger} label="" />
         </div>
         <div className="spriteObject susBar">
-            <img className="spriteObject susImage" src={susImage}></img>
+          <img className="spriteObject susImage" src={susImage}></img>
           <Meter value={gameStore.suspicion} label="" />
         </div>
-        <div className="spriteObject moneyView">
-          {gameStore.money}$
-        </div>
+        <div className="spriteObject moneyView">{gameStore.money}$</div>
       </div>
     );
   }
