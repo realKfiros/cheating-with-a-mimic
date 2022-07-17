@@ -13,7 +13,8 @@ import tBone from "./assets/meats/TBone steake 32x32.png";
 import trimmedBrisket from "./assets/meats/Trimmed brisket 32x32.png";
 import tenderloin from "./assets/meats/tenderloin 32x32.png";
 
-export const BUTCHERY_TIMER = 5;
+export const BUTCHERY_TIMER = 60;
+export const OFFICER_TIMER = 30;
 
 export enum Stage {
   TABLE,

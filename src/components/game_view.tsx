@@ -16,6 +16,7 @@ import dice6 from "../assets/Dice6.gif";
 import streetPlayer from "../assets/streetPlayer.png";
 import streetPlayerWalk from "../assets/streetPlayer-walk.gif";
 import womanNPC from "../assets/NPCs/gifs/NPC-Woman_Walk.gif";
+import officer from "../assets/officer.png";
 import manNPC from "../assets/NPCs/gifs/NPC-Man_Walk.gif";
 import mainBackground from "../assets/Street-BackGround.png";
 import hungerImage from "../assets/HUNGER.png";
@@ -71,6 +72,10 @@ const styleGameView = css`
   }
 
   .manNPC {
+    z-index: 4;
+    top: 95px;
+  }
+  .officer {
     z-index: 4;
     top: 95px;
   }
@@ -493,10 +498,10 @@ export const GameView: FC<GameViewProps> = observer(
                   className="spriteObject womanNPC flipped"
                   style={{ left: gameStore.npcLocations[3] + backgroundLocation }}
                   src={womanNPC}></img>
-                {/* <img className="spriteObject officer"
-                  style={{left: gameStore.oppicerLocation[3]+backgroundLocation}}
-                  src={womanNPC}>
-                </img> */}
+                <img className="spriteObject officer"
+                  style={{left: gameStore.officerLocation+backgroundLocation}}
+                  src={officer}>
+                </img>
               </div>
             </div>
             <div className="streetObjects"></div>
