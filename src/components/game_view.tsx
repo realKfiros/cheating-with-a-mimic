@@ -250,6 +250,7 @@ export const GameView: FC<GameViewProps> = observer(
             onChange={(value: number) => {
               gameStore.bettingAmount = value;
             }}
+            gameStore={gameStore}
           />
         ),
         buttons: [
@@ -268,7 +269,7 @@ export const GameView: FC<GameViewProps> = observer(
             },
           },
         ],
-      });
+      } as any);
     };
 
     const startRoll = () => {

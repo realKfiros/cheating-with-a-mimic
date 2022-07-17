@@ -1,8 +1,10 @@
 import React, { FC } from "react";
 import { css } from "@emotion/react";
+import {GameStore} from "../../stores/game_store";
 
 interface BettingAmountProps {
   onChange: (value: number) => void;
+  gameStore: GameStore;
 }
 
 const bettingAmountStyle = css`
@@ -18,7 +20,7 @@ const bettingAmountStyle = css`
   }
 `;
 
-const BettingAmount: FC<BettingAmountProps> = ({ onChange }) => {
+const BettingAmount: FC<BettingAmountProps> = ({ onChange, gameStore }) => {
   return (
     <div css={bettingAmountStyle}>
       <input
@@ -31,6 +33,8 @@ const BettingAmount: FC<BettingAmountProps> = ({ onChange }) => {
           if (Number(e.target.value) <= 0) return;
           onChange(parseInt(e.target.value));
         }}
+        min={0}
+        max={gameStore.money}
       />
     </div>
   );
