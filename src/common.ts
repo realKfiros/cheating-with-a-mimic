@@ -22,6 +22,7 @@ export enum Stage {
 
 export enum TableStage
 {
+    NO_GAME,
     WAIT_NEXT_NPC,
     ASK_BET,
     WAITING_BET,

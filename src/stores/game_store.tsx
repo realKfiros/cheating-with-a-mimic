@@ -122,26 +122,21 @@ export class GameStore implements GameStoreProps
                 //do logic to spawn next NPC
                 this.tableStage = TableStage.ASK_BET;
             } else if (this.tableStage == TableStage.NPC_WILL_ROLL) {
-                runInAction(() =>
-                {
-                    let res = this.throwDice(); //NPC throws dice - gets some number
-                    this.npcDiceResult[0] = res[0];
-                    this.npcDiceResult[1] = res[1];
-                });
+                let res = this.throwDice(); //NPC throws dice - gets some number
+                // this.npcDiceResult[0] = res[0];
+                // this.npcDiceResult[1] = res[1];
+                this.npcDiceResult = res;
                 this.setTableStage(TableStage.NPC_ROLLING);
-                console.log(this.npcDiceResult);
+                console.log("NPC rolled ", this.npcDiceResult);
             } else if (this.tableStage == TableStage.PLAYER_WILL_ROLL) {
-                
-                runInAction(() =>
-                {
-                    let NPCSum = 0;
-                    if(this.shouldCheat) {
-                        NPCSum = this.npcDiceResult[0] + this.npcDiceResult[1];
-                    }
-                    let res = this.throwDice(true,NPCSum); //NPC throws dice - gets some number
-                    this.playerDiceResult[0] = res[0];
-                    this.playerDiceResult[1] = res[1];
-                });
+                let NPCSum = 0;
+                if(this.shouldCheat) {
+                    NPCSum = this.npcDiceResult[0] + this.npcDiceResult[1];
+                }
+                let res = this.throwDice(true,NPCSum); //NPC throws dice - gets some number
+                // this.playerDiceResult[0] = res[0];
+                // this.playerDiceResult[1] = res[1];
+                this.playerDiceResult = res;
                 // this.playerDiceResult = this.throwDice(true,NPCSum);
                 this.setTableStage(TableStage.PLAYER_ROLLING);
                 console.log("changed stage");
