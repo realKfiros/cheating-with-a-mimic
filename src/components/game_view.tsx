@@ -3,16 +3,16 @@ import { observer } from "mobx-react-lite";
 import { GameContext } from "../stores/game_store";
 import { AppContext } from "../store";
 import { css } from "@emotion/react";
-import { Stage, TableStage } from "../common";
+import { Stage, TableStage, randomNumber } from "../common";
 import gameBoard from "../assets/gameBoard2.png";
 import playerHandUp from "../assets/Player-Hand-Up.png";
 import playerHandDown from "../assets/Player-Hand-Down.png";
-import dice1 from "../assets/Dice1.png";
-import dice2 from "../assets/Dice2.png";
-import dice3 from "../assets/Dice3.png";
-import dice4 from "../assets/Dice4.png";
-import dice5 from "../assets/Dice5.png";
-import dice6 from "../assets/Dice6.png";
+import dice1 from "../assets/Dice1.gif";
+import dice2 from "../assets/Dice2.gif";
+import dice3 from "../assets/Dice3.gif";
+import dice4 from "../assets/Dice4.gif";
+import dice5 from "../assets/Dice5.gif";
+import dice6 from "../assets/Dice6.gif";
 import streetPlayer from "../assets/streetPlayer.png";
 import mainBackground from "../assets/Street-BackGround.png";
 import rollies from "../assets/sounds/dice_rolling.wav";
@@ -80,7 +80,7 @@ const styleGameView = css`
   }
 
   .streetPlayer {
-    top: 120px;
+    top: 95px;
   }
 
   .hungerBar {
@@ -90,6 +90,10 @@ const styleGameView = css`
   .susBar {
     left: 350px;
     top: 45px;
+  }
+  .boardExitButton {
+    left: 25px;
+    top: 100px;
   }
   .moneyView {
     left: 318px;
@@ -105,6 +109,7 @@ export const GameView: FC<GameViewProps> = observer(
 
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
     const [diceFiles, setdiceFiles] = useState(["matos", "matos"]);
+    const [diceRotations, setDiceRotations] = useState([0,0]);
     //   const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
     const [moveDirection, setMoveDirection] = useState("none");
     const store = useContext(AppContext);
@@ -287,13 +292,13 @@ export const GameView: FC<GameViewProps> = observer(
     };
 
     const movePlayer = () => {
-      console.log("moving ", moveDirection);
+    //   console.log("moving ", moveDirection);
       if (moveDirection == "none") {
         return;
       }
       if (moveDirection == "right") {
         setTimeout(() => {
-          if (playerLocation < 280) {
+          if (playerLocation < 240) {
             setPlayerLocation(playerLocation + 5);
           } else {
             if (backgroundLocation > -768) {
@@ -340,12 +345,12 @@ export const GameView: FC<GameViewProps> = observer(
     const keyDown = (keyValue: string) => {
       switch (keyValue) {
         case "ArrowRight":
-          console.log("right");
+        //   console.log("right");
           setMoveDirection("right");
           break;
 
         case "ArrowLeft":
-          console.log("left");
+        //   console.log("left");
           setMoveDirection("left");
           break;
 
@@ -399,15 +404,16 @@ export const GameView: FC<GameViewProps> = observer(
             )}
             {diceAnimStage == DiceAnimStage.SHOW_DICE && (
               <>
-                <img className="spriteObject dieOne" src={diceFiles[0]}></img>
-                <img className="spriteObject dieTwo" src={diceFiles[1]}></img>
+                <img className="spriteObject dieOne" style={{transform:`rotate(${randomNumber(0,4)}deg)`}} src={diceFiles[0]}></img>
+                <img className="spriteObject dieTwo" style={{transform:`rotate(${randomNumber(0,4)}deg)`}} src={diceFiles[1]}></img>
               </>
             )}
 
             <div className="userInterface">
+                <div className="spriteObject boardExitButton">
               <MenuButton
                 importance
-                text="Buy"
+                text="Exit"
                 onClick={() =>
                   store.openDialog({
                     title: "Exit to street",
@@ -425,6 +431,7 @@ export const GameView: FC<GameViewProps> = observer(
                   })
                 }
               />
+              </div>
               {/* <div className="exitToStreet"></div> */}
               {/* <div className="moneySum"></div> */}
 
@@ -446,7 +453,9 @@ export const GameView: FC<GameViewProps> = observer(
                 style={{ left: playerLocation }}
                 src={streetPlayer}
               ></img>
-              <div className="NPCs"></div>
+              <div className="NPCs">
+                
+              </div>
             </div>
             <div className="streetObjects">
               <div className="gametable"></div>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { makeObservable, observable, action, computed, autorun, runInAction } from 'mobx';
-import {Stage, TableStage, randomNumber} from '../common';
+import {Stage, TableStage, randomNumber, meatItem, BUTCHERY_TIMER, possibleStock} from '../common';
 
 
 export const GameContext = React.createContext<any>(null);
+
 
 
 interface GameStoreProps
@@ -19,6 +20,8 @@ interface GameStoreProps
     playerDiceResult: number[];
     bettingAmount: number;
     shouldCheat: boolean;
+    butcheryTimer: number;
+    meatItems: meatItem[];
 }
 
 export class GameStore implements GameStoreProps
@@ -35,15 +38,26 @@ export class GameStore implements GameStoreProps
     @observable playerDiceResult = [0,0];
     @observable bettingAmount = 0;
     @observable shouldCheat = false;
-
+    @observable butcheryTimer = 0;
+    @observable meatItems = [{name: "null",price: 0,hunger_fulfillment: 0,image: "",},
+    {name: "null",price: 0,hunger_fulfillment: 0,image: "",},
+    {name: "null",price: 0,hunger_fulfillment: 0,image: "",}
+];
 
 
     constructor()
     {
         makeObservable(this);
-        this.gameLoop();
+        
         
     }
+
+    @action 
+    startLoops = () => {
+        this.gameLoop();
+        this.butcheryLoop();
+    }
+
     
     throwDice = (isPlayer=false,lowestSum=0) =>
     {
@@ -55,7 +69,7 @@ export class GameStore implements GameStoreProps
         } else{
             if(lowestSum > 0 && lowestSum != 12) {
                 let sum = 0;
-                while (sum < lowestSum) {
+                while (sum <= lowestSum) {
                     diceResults[0] = randomNumber(1, 6);
                     diceResults[1] = randomNumber(1, 6);
                     sum = diceResults[0] + diceResults[1];
@@ -114,6 +128,38 @@ export class GameStore implements GameStoreProps
     }
 
     @action
+    buyMeatItems = (indices:number[]) => {
+
+    }
+
+    getRandomStock = () => {
+        return possibleStock[randomNumber(0,possibleStock.length)] as meatItem
+    }
+
+    @action
+    setMeatItems = (meatItems:meatItem[]) => {
+        this.meatItems = meatItems;
+    }
+
+    @action
+    butcheryLoop = () =>{
+        console.log(this.butcheryTimer);
+        this.butcheryTimer -=1;
+        if(this.butcheryTimer<=0) {
+            this.butcheryTimer = BUTCHERY_TIMER;
+            const items = [this.getRandomStock(),this.getRandomStock(),this.getRandomStock()];
+            console.log("new items: ",items);
+            this.setMeatItems(items);
+        }
+        if (this.running) {
+            setTimeout(() => {
+                this.butcheryLoop();
+            }, 1000);
+
+        }
+    }
+
+    @action
     gameLoop()
     {
         if(this.stage == Stage.TABLE) {
@@ -159,6 +205,7 @@ export class GameStore implements GameStoreProps
             
         }
 
+        
         this.handleHunger();
         
         if (this.running) {

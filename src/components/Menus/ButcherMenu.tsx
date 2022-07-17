@@ -1,9 +1,12 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import MenuButton from "../menu_button";
-import { Stock } from "../list_item";
+import { GameContext } from "../../stores/game_store";
+import { meatItem } from "../../common";
 import { menu, Spacer } from "../../styles";
 import { css } from "@emotion/react";
 import { action, computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react-lite";
+
 import { AppContext } from "../../store";
 import { classNames, pick } from "../../utilities";
 import { possibleStock } from "../../common";
@@ -27,17 +30,18 @@ interface ButcherMenu {
 
 const ButcherMenu = ({ goBack }: ButcherMenu) => {
   const { openDialog, closeDialog }: any = useContext(AppContext);
-  const [stock, setStock] = useState<Stock[]>([]);
+
+  // const [stock, setStock] = useState<Stock[]>(gameStore.meatItems);
   // TODO: after "an hour" (or a day) it should refresh with new items
 
-  const [cart, setCart] = useState<Stock[]>([]);
+  const [cart, setCart] = useState<number[]>([]);
   // TODO: after clicking on the buy button it will increase the hunger meter
 
   return (
     <div css={styleButcherMenu}>
       <div className="title">Welcome to Tony’s</div>
       <div className="vertical">
-        <ButcherBoard />
+        <ButcherBoard cart={cart} setCart={setCart}/>
         <Spacer />
         <MenuButton
           importance
@@ -46,13 +50,11 @@ const ButcherMenu = ({ goBack }: ButcherMenu) => {
             openDialog({
               title: "Bought that",
               content: "enjoy :)",
-              buttons: [
+              buttons:
                 {
                   title: "Close",
                   onClick: closeDialog,
                 },
-                { title: "I regret", onClick: closeDialog },
-              ],
               onClose: () => goBack(),
             })
           }
@@ -62,12 +64,9 @@ const ButcherMenu = ({ goBack }: ButcherMenu) => {
   );
 };
 
-interface ButcherItem {
-  name: string;
-  price: number;
-  hunger_fulfillment_per_second: number;
-  timer: number;
-  image: string;
+interface ButcherBoardProps {
+  cart: number[],
+  setCart: React.Dispatch<React.SetStateAction<number[]>>
 }
 
 const styleButcherBoard = css`
@@ -79,16 +78,23 @@ const styleButcherBoard = css`
     margin: 5px;
   }
 `;
-const ButcherBoard = () => {
-  const options = pick(possibleStock, 3);
+const ButcherBoard: FC<ButcherBoardProps> = observer((cart, setCart) => {
+  const gameStore = useContext(GameContext);
+  const [meatItems,setMeatItems] = useState([]);
+
+  useEffect(() => {
+    setMeatItems(gameStore.meatItems);
+    console.log("ass")
+  }, [gameStore.meatItems])
+  
   return (
     <div css={styleButcherBoard}>
-      {options.map((o, index) => (
-        <Item key={index} {...o} />
+      {(meatItems as meatItem[]).map((o, index) => (
+        <Item key={index} {...o} setCart={setCart} />
       ))}
     </div>
   );
-};
+});
 
 const styleItem = ({ selected }: any) => css`
   background-color: ${selected ? "#4d4d4d" : "#F8F8F8"};
@@ -126,8 +132,15 @@ const styleItem = ({ selected }: any) => css`
     font-size: 5px;
   }
 `;
-const Item: FC<ButcherItem> = ({ name, price, image }) => {
+
+interface ButcherItem extends meatItem{
+  setCart: React.Dispatch<React.SetStateAction<number[]>>
+}
+
+const Item: FC<ButcherItem> = ({ name, price, image, setCart }) => {
   const [selected, setSelected] = useState(false);
+
+
 
   return (
     <div css={styleItem({ selected })} onClick={() => setSelected(!selected)}>

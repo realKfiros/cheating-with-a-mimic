@@ -13,6 +13,8 @@ import tBone from "./assets/meats/TBone steake 32x32.png";
 import trimmedBrisket from "./assets/meats/Trimmed brisket 32x32.png";
 import tenderloin from "./assets/meats/tenderloin 32x32.png";
 
+export const BUTCHERY_TIMER = 5;
+
 export enum Stage {
   TABLE,
   STREET,
@@ -36,107 +38,101 @@ export enum TableStage
     
 };
 
+export interface meatItem {
+    name: string,
+    price: number,
+    hunger_fulfillment: number,
+    image: string
+}
+
 export const possibleStock = [
   {
     name: "Kidney",
     price: 2,
-    hunger_fulfillment_per_second: 0.25,
-    timer: 5,
+    hunger_fulfillment: 5.25,
     image: kidney,
   },
   {
     name: "Liver",
     price: 3,
-    hunger_fulfillment_per_second: 0.32,
-    timer: 5,
+    hunger_fulfillment: 5.32,
     image: liver,
   },
   {
     name: "Heart",
     price: 4,
-    hunger_fulfillment_per_second: 0.4,
-    timer: 5,
+    hunger_fulfillment: 5.4,
     image: heart,
   },
   {
     name: "Ground Beef",
     price: 5,
-    hunger_fulfillment_per_second: 0.5,
-    timer: 5,
+    hunger_fulfillment: 5.7,
     image: groundBeef,
   },
   {
     name: "Tongue",
     price: 7,
-    hunger_fulfillment_per_second: 0.7,
-    timer: 5,
+    hunger_fulfillment: 5.85,
     image: tongue,
   },
   {
     name: "Short Ribs",
     price: 9,
-    hunger_fulfillment_per_second: 0.85,
-    timer: 5,
+    hunger_fulfillment: 6.05,
     image: shortRibs,
   },
   {
     name: "Sirloin Steak",
     price: 11,
-    hunger_fulfillment_per_second: 1.05,
-    timer: 5,
+    hunger_fulfillment: 6.2,
     image: sirloin,
   },
   {
     name: "Flank Steak",
     price: 12,
-    hunger_fulfillment_per_second: 1.2,
-    timer: 5,
+    hunger_fulfillment: 6.55,
     image: flank,
   },
   {
     name: "T-Bone Steak",
     price: 15,
-    hunger_fulfillment_per_second: 1.55,
-    timer: 5,
+    hunger_fulfillment: 6.69,
     image: tBone,
   },
   {
     name: "Strip Steak",
     price: 16,
-    hunger_fulfillment_per_second: 1.69,
-    timer: 5,
+    hunger_fulfillment: 6.75,
     image: strip,
   },
   {
     name: "Brisket Trimmed",
     price: 17,
-    hunger_fulfillment_per_second: 1.75,
-    timer: 5,
+    hunger_fulfillment: 6.95,
     image: trimmedBrisket,
   },
   {
     name: "Rib eye steak",
     price: 18,
-    hunger_fulfillment_per_second: 1.95,
-    timer: 5,
+    hunger_fulfillment: 6.95,
     image: ribeye,
   },
   {
     name: "Tendorlion Steak",
     price: 20,
-    hunger_fulfillment_per_second: 2,
-    timer: 5,
+    hunger_fulfillment: 7,
     image: tenderloin,
   },
 ];
 
 export const randomNumber = (start:number, end:number)=> {
-    console.log("matos123")
+    // console.log("matos123")
     if(end<start) {
         console.error("End number smaller than start number")
     }
-    let num = Math.floor(start + (Math.random() * (end-start+1)));
-    console.log("matos:",num);
+    let num = Math.round(start + (Math.random() * (end-start)));
+    // console.log("matos:",num);
     return num;
 }
 
