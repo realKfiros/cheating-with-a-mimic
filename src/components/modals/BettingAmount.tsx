@@ -27,6 +27,8 @@ const BettingAmount: FC<BettingAmountProps> = ({ onChange }) => {
         type="number"
         autoFocus
         onChange={(e) => {
+          if (!e.target.value) return;
+          if (Number(e.target.value) <= 0) return;
           onChange(parseInt(e.target.value));
         }}
       />
