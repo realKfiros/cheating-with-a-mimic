@@ -5,6 +5,7 @@ export const menu = css`
   flex-direction: column;
   color: #0d0d0d;
   justify-content: center;
+  margin-top: 50px;
   align-items: center;
 
   > * {
@@ -13,8 +14,11 @@ export const menu = css`
 
   .title {
     font-family: "PixeliodSansBold";
-    font-size: 10px;
+    font-size: 12px;
     margin-bottom: 1px;
+    color: #d2e8cf;
+    text-shadow: 2px 2px 5px #45283c;
+    /* -webkit-text-stroke: 0.75px #45283c; */
   }
 `;
 
