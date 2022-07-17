@@ -10,6 +10,10 @@ import { observer } from "mobx-react-lite";
 import { AppContext } from "../../store";
 import { classNames, pick } from "../../utilities";
 import { possibleStock } from "../../common";
+import Meter from "../meters/Meter";
+
+import hungerImage from "../../assets/HUNGER.png";
+import susImage from "../../assets/sus.png";
 
 const styleButcherMenu = css`
   ${menu}
@@ -21,6 +25,42 @@ const styleButcherMenu = css`
       flex: 1;
       margin: auto auto 0;
     }
+
+    
+  }
+
+  .spriteObject {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  .hungerBar {
+    left: 320px;
+    top: 45px;
+    z-index: 5;
+  }
+  .susBar {
+    left: 350px;
+    top: 45px;
+    z-index: 5;
+  }
+
+  .moneyView {
+    left: 318px;
+    top: 145px;
+    color:gold;
+    text-shadow: 1px 2px 2px #45283c;
+    z-index: 5;
+  }
+  .hungerImage{
+    position:absolute;
+    top: -10px;
+  }
+  .susImage{
+    position:absolute;
+    top: -10px;
   }
 `;
 
@@ -28,8 +68,8 @@ interface ButcherMenu {
   goBack: () => void;
 }
 
-const ButcherMenu = ({ goBack }: ButcherMenu) => {
-  const { buyMeatItems }: any = useContext(GameContext);
+const ButcherMenu = observer(({ goBack }: ButcherMenu) => {
+  const gameStore = useContext(GameContext);
 
   // const [stock, setStock] = useState<Stock[]>(gameStore.meatItems);
   // TODO: after "an hour" (or a day) it should refresh with new items
@@ -46,12 +86,23 @@ const ButcherMenu = ({ goBack }: ButcherMenu) => {
         <MenuButton
           importance
           text="Buy"
-          onClick={() => buyMeatItems()}
+          onClick={() => gameStore.buyMeatItems()}
         />
       </div>
+      <div className="spriteObject hungerBar">
+            <img className="spriteObject hungerImage" src={hungerImage}></img>
+          <Meter value={gameStore.hunger} label="" />
+        </div>
+        <div className="spriteObject susBar">
+            <img className="spriteObject susImage" src={susImage}></img>
+          <Meter value={gameStore.suspicion} label="" />
+        </div>
+        <div className="spriteObject moneyView">
+          {gameStore.money}$
+        </div>
     </div>
   );
-};
+});
 
 interface ButcherBoardProps {
   cart: number[],
