@@ -36,6 +36,7 @@ enum DiceAnimStage {
 }
 interface GameViewProps {
   showButcher: () => void;
+  showDeathScreen: () => void;
   backgroundLocation: number;
   setBackgroundLocation: (location: number) => void;
   pause: () => void;
@@ -137,7 +138,7 @@ const styleGameView = css`
 `;
 
 export const GameView: FC<GameViewProps> = observer(
-  ({ showButcher, backgroundLocation, setBackgroundLocation, pause }) => {
+  ({ showButcher, showDeathScreen, backgroundLocation, setBackgroundLocation, pause }) => {
     var [playerLocation, setPlayerLocation] = useState(192);
     //   var [backgroundLocation, setBackgroundLocation] = useState(-384);
 
@@ -192,6 +193,13 @@ export const GameView: FC<GameViewProps> = observer(
         gameStore.setTableStage(TableStage.NO_GAME);
       }
     }, [gameStore.stage]);
+
+    useEffect(() => {
+      if (gameStore.lost) {
+        showDeathScreen();
+      }
+    }, [gameStore.lost]);
+
     useEffect(() => {
       document.addEventListener("keydown", (event) => {
         if (!event.repeat) keyDown(event.key);
