@@ -11,13 +11,17 @@ export const mainStoreInstance = (init: boolean = false) =>
 	return msInstance = msInstance || (init && new Store());
 };
 
-export interface StoreProps {
+export interface StoreProps
+{
 	dialog: DialogProps;
 }
-export interface ButtonProps {
+
+export interface ButtonProps
+{
 	title: string;
 	onClick: () => void;
 }
+
 export interface DialogProps
 {
 	title: string;
@@ -26,6 +30,7 @@ export interface DialogProps
 	buttons: Array<ButtonProps>;
 	onClose: () => void;
 }
+
 export class Store implements StoreProps
 {
 	@observable dialog: DialogProps = {

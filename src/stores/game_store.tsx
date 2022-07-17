@@ -53,8 +53,12 @@ export class GameStore implements GameStoreProps
     ];
     @observable selectedItems = new Set<number>();
 
-    @observable npcLocations = [randomNumber(0, 800), randomNumber(0, 800),
-                                randomNumber(0, 800), randomNumber(0, 800)];
+    @observable npcLocations = [
+        randomNumber(0, 800),
+        randomNumber(0, 800),
+        randomNumber(0, 800),
+        randomNumber(0, 800)
+    ];
     @observable officerLocation = randomNumber(0, 800);
     @observable officerTimer = 0;
     @observable officerDirection = "left";
@@ -62,8 +66,6 @@ export class GameStore implements GameStoreProps
     constructor()
     {
         makeObservable(this);
-        
-        
     }
 
     @action 
@@ -76,7 +78,6 @@ export class GameStore implements GameStoreProps
     
     throwDice = (isPlayer=false,lowestSum=0) =>
     {
-        // console.log("throwing");
         let diceResults = [0,0];
         if(!isPlayer) {
             diceResults[0] = randomNumber(1, 6);
@@ -98,12 +99,10 @@ export class GameStore implements GameStoreProps
                 diceResults[1] = randomNumber(1, 6);
             }
         }
-        // console.log(diceResults);
         if(isPlayer && this.shouldCheat) {
             const officerDist = Math.abs(this.officerLocation - 650);
             if(officerDist<300) {
                 this.suspicion += (20 * ((300-officerDist)/300))
-                // console.log("adding to suspicion because of officer", (20 * ((100-officerDist)/100)))
             }
                  
             this.suspicion += 5;
@@ -154,7 +153,6 @@ export class GameStore implements GameStoreProps
     handleHunger = () => {
         this.hunger -= 0.003;
         if (this.hunger < 0){
-            // console.log("you've ran out of hunger");
             this.running = false;
             this.lost = true;
         }
@@ -162,7 +160,6 @@ export class GameStore implements GameStoreProps
     handleSus = () => {
         // this.hunger -= 0.003;
         if (this.suspicion >= 100){
-            // console.log("you've nger");
             this.running = false;
             this.lost = true;
         }
@@ -184,7 +181,6 @@ export class GameStore implements GameStoreProps
 
     @action
     officerLoop = () => {
-        // console.log(this.officerLocation);
         if (this.officerDirection=="right"){
             this.officerLocation -= 0.2;
             if (this.officerLocation < -40)
@@ -268,7 +264,6 @@ export class GameStore implements GameStoreProps
             this.butcheryTimer = BUTCHERY_TIMER;
             const items = [this.getRandomStock(),this.getRandomStock(),this.getRandomStock()];
             this.selectedItems.clear();
-            // console.log("new items: ",items);
             this.setMeatItems(items);
         }
         if (this.running)
@@ -311,7 +306,6 @@ export class GameStore implements GameStoreProps
                     let res = this.throwDice(); //NPC throws dice - gets some number
                     this.npcDiceResult = res;
                     this.setTableStage(TableStage.NPC_ROLLING);
-                    // console.log("NPC rolled ", this.npcDiceResult);
                 }
             } else if (this.tableStage == TableStage.PLAYER_WILL_ROLL) {
                 let NPCSum = 0;
@@ -319,12 +313,8 @@ export class GameStore implements GameStoreProps
                     NPCSum = this.npcDiceResult[0] + this.npcDiceResult[1];
                 }
                 let res = this.throwDice(true,NPCSum); //NPC throws dice - gets some number
-                // this.playerDiceResult[0] = res[0];
-                // this.playerDiceResult[1] = res[1];
                 this.playerDiceResult = res;
-                // this.playerDiceResult = this.throwDice(true,NPCSum);
                 this.setTableStage(TableStage.PLAYER_ROLLING);
-                // console.log("changed stage");
             }
             // } else if (this.tableStage == TableStage.SHOW_WINNER) {
             //     this.handleGameResult();
