@@ -85,11 +85,16 @@ const styleGameView = css`
 
   .hungerBar {
     left: 320px;
-    top: 65px;
+    top: 45px;
   }
   .susBar {
     left: 350px;
-    top: 65px;
+    top: 45px;
+  }
+  .moneyView {
+    left: 318px;
+    top: 145px;
+    color:gold;
   }
 `;
 
@@ -130,7 +135,7 @@ export const GameView: FC<GameViewProps> = observer(
           const playerSum =
             gameStore.playerDiceResult[0] + gameStore.playerDiceResult[1];
           const didPlayerWin = playerSum > npcSum;
-          const delta = gameStore.bettingAmount * 2;
+          const delta = gameStore.bettingAmount;
           store.openDialog({
             title: didPlayerWin ? "Winner :)" : "Loser :(",
             content: (
@@ -210,6 +215,13 @@ export const GameView: FC<GameViewProps> = observer(
           />
         ),
         buttons: [
+            {
+                title: "Exit to street",
+                onClick: () => {
+                  store.closeDialog();
+                  exitBoard();
+                },
+              },
           {
             title: "Bet",
             onClick: () => {
@@ -217,13 +229,7 @@ export const GameView: FC<GameViewProps> = observer(
               gameStore.tableStage = TableStage.NPC_WILL_ROLL;
             },
           },
-          {
-            title: "Exit to street",
-            onClick: () => {
-              store.closeDialog();
-              exitBoard();
-            },
-          },
+          
         ],
       });
     };
@@ -452,6 +458,9 @@ export const GameView: FC<GameViewProps> = observer(
         </div>
         <div className="spriteObject susBar">
           <Meter value={gameStore.suspicion} label="?" />
+        </div>
+        <div className="spriteObject moneyView">
+          {gameStore.money}$
         </div>
       </div>
     );

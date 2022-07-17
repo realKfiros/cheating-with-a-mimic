@@ -78,7 +78,7 @@ export class GameStore implements GameStoreProps
         
         if (playerSum > npcSum){
             // earn money
-            this.money += this.bettingAmount;
+            this.money += this.bettingAmount*2;
             if (this.shouldCheat)
                 //handle sus meter
                 this.suspicion += 5;
@@ -86,7 +86,6 @@ export class GameStore implements GameStoreProps
         }
         else{
             // lose money
-            this.money -= this.bettingAmount;
             return true;
         }
     }
@@ -122,6 +121,7 @@ export class GameStore implements GameStoreProps
                 //do logic to spawn next NPC
                 this.tableStage = TableStage.ASK_BET;
             } else if (this.tableStage == TableStage.NPC_WILL_ROLL) {
+                this.money -= this.bettingAmount;
                 let res = this.throwDice(); //NPC throws dice - gets some number
                 // this.npcDiceResult[0] = res[0];
                 // this.npcDiceResult[1] = res[1];
