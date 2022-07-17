@@ -1,8 +1,8 @@
-import React, {FC} from "react";
+import React, { FC } from "react";
 import { css } from "@emotion/react";
 
 interface BettingAmountProps {
-  onChange: (value:number)=>void;
+  onChange: (value: number) => void;
 }
 
 const bettingAmountStyle = css`
@@ -11,14 +11,25 @@ const bettingAmountStyle = css`
   .betting-field {
     color: black;
     background: white;
-    width: 35%;
+    width: 150px;
+    height: 35px;
+    font-size: large;
+    font-family: PixeliodSans;
   }
 `;
 
-const BettingAmount:FC<BettingAmountProps> = ({onChange}) => {
+const BettingAmount: FC<BettingAmountProps> = ({ onChange }) => {
   return (
     <div css={bettingAmountStyle}>
-      <input className="betting-field" name="Bet" type="number" autoFocus onChange={(e)=>{onChange(parseInt(e.target.value))}}/>
+      <input
+        className="betting-field"
+        name="Bet"
+        type="number"
+        autoFocus
+        onChange={(e) => {
+          onChange(parseInt(e.target.value));
+        }}
+      />
     </div>
   );
 };
