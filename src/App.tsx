@@ -32,7 +32,7 @@ const App = observer(() => {
   const styleGameCanvas = css`
     height: 100vh;
     width: auto;
-	max-width:100vw;
+    max-width: 100vw;
     display: flex;
     justify-content: center;
     aspect-ratio: 16 / 9;
@@ -42,10 +42,10 @@ const App = observer(() => {
     vertical-align: middle;
     margin-top: auto;
     align-items: center;
-	overflow:hidden;
-	position: relative;
+    overflow: hidden;
+    position: relative;
 
-	.spriteObject {
+    .spriteObject {
       position: absolute;
       top: 0;
       left: 0;
@@ -62,7 +62,8 @@ const App = observer(() => {
       left: ${backgroundLocation}px;
     }
 
-    .ForegroundElements, .backgroundTextureContainer {
+    .ForegroundElements,
+    .backgroundTextureContainer {
       position: absolute;
       z-index: 1;
       width: 384px;
@@ -77,14 +78,37 @@ const App = observer(() => {
   return (
     <div className="App">
       <div className="GameCanvas" css={styleGameCanvas}>
-		<div className="backgroundTextureContainer">
-	    	<img className="spriteObject BackgroundTexture" src={mainBackground}></img>
-		</div>
+        <div className="backgroundTextureContainer">
+          <img className="spriteObject BackgroundTexture" src={mainBackground}></img>
+        </div>
         <div className="ForegroundElements">
-          {currentPage == "main_menu" && <MainMenu onStart={()=>{setCurrentPage("game_view")}}/>}
-		  <GameContext.Provider value={new GameStore()}>
-			{currentPage == "butcher_menu" && <ButcherMenu />}
-            {currentPage == "game_view" && <GameView setBackgroundLocation={(location)=>setBackgroundLocation(location)} backgroundLocation={backgroundLocation} showButcher={()=>{setCurrentPage("butcher_menu")}}/>}
+          {currentPage == "main_menu" && (
+            <MainMenu
+              onStart={() => {
+                setCurrentPage("game_view");
+              }}
+            />
+          )}
+          <GameContext.Provider value={new GameStore()}>
+            {currentPage == "butcher_menu" && (
+              <ButcherMenu goBack={() => setCurrentPage("game_view")} />
+            )}
+            {currentPage == "game_view" && (
+              <GameView
+                setBackgroundLocation={(location) => setBackgroundLocation(location)}
+                backgroundLocation={backgroundLocation}
+                showButcher={() => {
+                  setCurrentPage("butcher_menu");
+                }}
+                pause={() => setCurrentPage("pause_menu")}
+              />
+            )}
+            {currentPage == "pause_menu" && (
+              <PauseMenu
+                goBack={() => setCurrentPage("game_view")}
+                toMain={() => setCurrentPage("main_menu")}
+              />
+            )}
           </GameContext.Provider>
         </div>
       </div>

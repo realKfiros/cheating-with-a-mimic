@@ -17,8 +17,8 @@ export const menu = css`
     font-size: 12px;
     margin-bottom: 1px;
     color: #d2e8cf;
-    text-shadow: 2px 2px 5px #45283c;
-    /* -webkit-text-stroke: 0.75px #45283c; */
+    text-shadow: 2px 2px 1px #45283c;
+    -webkit-text-stroke: 0.5px #45283c;
   }
 `;
 
