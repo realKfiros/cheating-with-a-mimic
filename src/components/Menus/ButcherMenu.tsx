@@ -124,7 +124,6 @@ const ButcherBoard: FC<ButcherBoardProps> = observer((cart, setCart) => {
 
   useEffect(() => {
     setMeatItems(gameStore.meatItems);
-    console.log("ass")
   }, [gameStore.meatItems])
   
   return (
