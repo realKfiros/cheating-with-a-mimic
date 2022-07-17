@@ -7,17 +7,20 @@ import Credits from "../modals/Credits";
 import BettingAmount from "../modals/BettingAmount";
 
 interface MainMenuProps {
-  onStart: ()=>void;
+  onStart: () => void;
 }
 
-const MainMenu:FC<MainMenuProps> = ({onStart}) => {
+const MainMenu: FC<MainMenuProps> = ({ onStart }) => {
   const { openDialog }: any = useContext(AppContext);
 
   return (
     <div css={menu}>
-      <div className="title">Game Title Here</div>
+      <div className="title">Cheating with a Mimic</div>
       <MenuButton text="Start" onClick={() => onStart()} />
-      <MenuButton text="Credits" onClick={() => openDialog({title: "Credits", content: <Credits />})} />
+      <MenuButton
+        text="Credits"
+        onClick={() => openDialog({ title: "Credits", content: <Credits /> })}
+      />
     </div>
   );
 };
