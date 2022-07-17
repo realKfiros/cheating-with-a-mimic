@@ -14,6 +14,8 @@ import dice4 from "../assets/Dice4.png";
 import dice5 from "../assets/Dice5.png";
 import dice6 from "../assets/Dice6.png";
 import streetPlayer from "../assets/streetPlayer.png";
+import womanNPC from "../assets/NPCs/gifs/NPC-Woman_Walk.gif";
+import manNPC from "../assets/NPCs/gifs/NPC-Man_Walk.gif";
 import mainBackground from "../assets/Street-BackGround.png";
 import rollies from "../assets/sounds/dice_rolling.wav";
 import Meter from "../components/meters/Meter";
@@ -58,6 +60,20 @@ const styleGameView = css`
     /* height: calc((100vh/216)); */
     /* width: auto; */
   }
+
+  .womanNPC{
+    top: 110px;
+  }
+
+  .manNPC{
+    top: 95px;
+  }
+
+  .flipped{
+    z-index: 4;
+    transform: scaleX(-1)
+  }
+
   .gameBoard {
     z-index: -1;
   }
@@ -80,7 +96,8 @@ const styleGameView = css`
   }
 
   .streetPlayer {
-    top: 120px;
+    top: 125px;
+    z-index: 3;
   }
 
   .hungerBar {
@@ -101,6 +118,7 @@ const styleGameView = css`
 export const GameView: FC<GameViewProps> = observer(
   ({ showButcher, backgroundLocation, setBackgroundLocation, pause }) => {
     var [playerLocation, setPlayerLocation] = useState(192);
+    var [npcsLocations, setNPCSLocations] = useState([-5, 5, -5, 5]);
     //   var [backgroundLocation, setBackgroundLocation] = useState(-384);
 
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
@@ -446,7 +464,25 @@ export const GameView: FC<GameViewProps> = observer(
                 style={{ left: playerLocation }}
                 src={streetPlayer}
               ></img>
-              <div className="NPCs"></div>
+              <div className="NPCs">
+                <img className="spriteObject womanNPC"
+                  style={{left: gameStore.npcLocations[0]}}
+                  src={womanNPC}>
+                </img>
+                <img className="spriteObject manNPC flipped"
+                  style={{left: gameStore.npcLocations[1]}}
+                  src={manNPC}>
+                </img>
+                <img className="spriteObject manNPC"
+                  style={{left: gameStore.npcLocations[2]}}
+                  src={manNPC}>
+                </img>
+                <img className="spriteObject womanNPC flipped"
+                  style={{left: gameStore.npcLocations[3]}}
+                  src={womanNPC}>
+                </img>
+
+              </div>
             </div>
             <div className="streetObjects">
               <div className="gametable"></div>
