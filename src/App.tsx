@@ -11,6 +11,7 @@ import ButcherMenu from "./components/Menus/ButcherMenu";
 import DeathScreen from "./components/Menus/DeathScreen"
 import PauseMenu from "./components/Menus/PauseMenu";
 import mainBackground from "./assets/Street-BackGround.png";
+import streetTable from "./assets/Stand.png";
 import { css } from "@emotion/react";
 
 const styleGameCanvas = css`
@@ -35,7 +36,10 @@ position: relative;
   left: 0;
   z-index: 2;
 }
-
+.streetTable {
+    top: 160px;
+    z-index: 3;
+  }
 
 
 .ForegroundElements,
@@ -78,6 +82,7 @@ const App = observer(() => {
       <div className="GameCanvas" css={styleGameCanvas}>
       
         <div className="backgroundTextureContainer" style={{transform:`scale(${ratio})`}}>
+		  <img className="spriteObject streetTable" style={{left:`${backgroundLocation + 650}px`}} src={streetTable}></img>
           <img className="spriteObject BackgroundTexture" style={{left:`${backgroundLocation}px`}} src={mainBackground}></img>
         </div>
         <div className="ForegroundElements" style={{transform:`scale(${ratio})`}}>
