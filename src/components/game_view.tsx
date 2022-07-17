@@ -35,70 +35,68 @@ interface GameViewProps {
   pause: () => void;
 }
 
+const styleGameView = css`
+left: 0;
+.tableView {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.spriteObject {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.player {
+  top: 15px;
+  left: 104px;
+  /* scale: calc(2em); */
+  /* height: calc((100vh/216)); */
+  /* width: auto; */
+}
+.gameBoard {
+  z-index: -1;
+}
+
+.showCupContent {
+  top: 50px;
+  left: 150px;
+}
+.cupFlip {
+  top: 50px;
+  left: 150px;
+}
+.dieOne {
+  top: 50px;
+  left: 150px;
+}
+.dieTwo {
+  top: 80px;
+  left: 190px;
+}
+
+.streetPlayer {
+  top: 120px;
+}
+
+.hungerBar {
+  left: 320px;
+  top: 65px;
+}
+.susBar {
+  left: 350px;
+  top: 65px;
+}
+`;
+
 export const GameView: FC<GameViewProps> = observer(
   ({ showButcher, backgroundLocation, setBackgroundLocation, pause }) => {
     var [playerLocation, setPlayerLocation] = useState(192);
     //   var [backgroundLocation, setBackgroundLocation] = useState(-384);
-    const styleGameView = css`
-      left: 0;
-      .tableView {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
 
-      .spriteObject {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 2;
-      }
-
-      .player {
-        top: 15px;
-        left: 104px;
-        /* scale: calc(2em); */
-        /* height: calc((100vh/216)); */
-        /* width: auto; */
-      }
-      .gameBoard {
-        z-index: -1;
-      }
-
-      .showCupContent {
-        top: 50px;
-        left: 150px;
-      }
-      .cupFlip {
-        top: 50px;
-        left: 150px;
-      }
-      .dieOne {
-        top: 50px;
-        left: 150px;
-      }
-      .dieTwo {
-        top: 80px;
-        left: 190px;
-      }
-      /* .BackgroundTexture {
-      left: ${backgroundLocation}px;
-    } */
-
-      .streetPlayer {
-        top: 120px;
-        left: ${playerLocation}px;
-      }
-
-      .hungerBar {
-        left: 320px;
-        top: 65px;
-      }
-      .susBar {
-        left: 350px;
-        top: 65px;
-      }
-    `;
     const [diceAnimStage, setdiceAnimStage] = useState(DiceAnimStage.HIDDEN);
     const [diceFiles, setdiceFiles] = useState(["matos", "matos"]);
     //   const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
@@ -172,6 +170,10 @@ export const GameView: FC<GameViewProps> = observer(
       });
     }, []);
 
+    useEffect(() => {
+      movePlayer();
+    }, [gameStore.playerDiceResult, moveDirection, backgroundLocation]);
+    
     useEffect(() => {
       movePlayer();
     }, [playerLocation, moveDirection, backgroundLocation]);
@@ -365,7 +367,7 @@ export const GameView: FC<GameViewProps> = observer(
           <div className="streetView" onKeyDown={(e) => console.log("ass")} tabIndex={0}>
             {/* <img className="spriteObject BackgroundTexture" src={mainBackground}></img> */}
             <div className="characters">
-              <img className="spriteObject streetPlayer" src={streetPlayer}></img>
+              <img className="spriteObject streetPlayer" style={{left:playerLocation}} src={streetPlayer}></img>
               <div className="NPCs"></div>
             </div>
             <div className="streetObjects">

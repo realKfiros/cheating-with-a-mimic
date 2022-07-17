@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { css } from "@emotion/react";
 
 interface MeterProps {
@@ -7,6 +7,14 @@ interface MeterProps {
   }
 
 const Meter:FC<MeterProps> = ({value, label}) => {
+    const [height, setHeight] = useState(0);
+
+    useEffect(() => {
+        const rounded = Math.round(value);
+        if(height != rounded) {
+            setHeight(rounded);
+        }
+      }, [value]);
     const style =  css`
         /* position: absolute;
         z-index: 3;
@@ -17,7 +25,7 @@ const Meter:FC<MeterProps> = ({value, label}) => {
         background-color: brown;
         .meterBorder{
             width: 6px;
-            height: ${value}px;
+            height: ${height}px;
             background-color: green;
             bottom:1px;
             left:1px;
