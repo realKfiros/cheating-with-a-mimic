@@ -14,6 +14,7 @@ import dice4 from "../assets/Dice4.gif";
 import dice5 from "../assets/Dice5.gif";
 import dice6 from "../assets/Dice6.gif";
 import streetPlayer from "../assets/streetPlayer.png";
+import streetPlayerWalk from "../assets/streetPlayer-walk.gif";
 import womanNPC from "../assets/NPCs/gifs/NPC-Woman_Walk.gif";
 import manNPC from "../assets/NPCs/gifs/NPC-Man_Walk.gif";
 import mainBackground from "../assets/Street-BackGround.png";
@@ -64,15 +65,17 @@ const styleGameView = css`
   }
 
   .womanNPC{
+    z-index: 4;
     top: 110px;
   }
 
   .manNPC{
+    z-index: 4;
     top: 95px;
   }
 
   .flipped{
-    z-index: 4;
+    /* z-index: 4; */
     transform: scaleX(-1)
   }
 
@@ -143,6 +146,7 @@ export const GameView: FC<GameViewProps> = observer(
     const [diceRotations, setDiceRotations] = useState([0,0]);
     //   const [tableStage, settableStage] = useState(TableStage.WAIT_NEXT_NPC);
     const [moveDirection, setMoveDirection] = useState("none");
+    const [lastDirection, setLastDirection] = useState("right");
     const store = useContext(AppContext);
     const gameStore = useContext(GameContext);
 
@@ -375,11 +379,13 @@ export const GameView: FC<GameViewProps> = observer(
         case "ArrowRight":
         //   console.log("right");
           setMoveDirection("right");
+          setLastDirection("right");
           break;
 
         case "ArrowLeft":
         //   console.log("left");
           setMoveDirection("left");
+          setLastDirection("left");
           break;
 
         case "ArrowUp":
@@ -475,8 +481,8 @@ export const GameView: FC<GameViewProps> = observer(
             <div className="characters">
               <img
                 className="spriteObject streetPlayer"
-                style={{ left: playerLocation }}
-                src={streetPlayer}
+                style={{ left: playerLocation, transform:`scaleX(${lastDirection=="right" ? 1 : -1})` }}
+                src={(moveDirection == "left" || moveDirection == "right") ? streetPlayerWalk : streetPlayer}
               ></img>
               <div className="NPCs">
                 <img className="spriteObject womanNPC"
@@ -495,6 +501,10 @@ export const GameView: FC<GameViewProps> = observer(
                   style={{left: gameStore.npcLocations[3]+backgroundLocation}}
                   src={womanNPC}>
                 </img>
+                {/* <img className="spriteObject officer"
+                  style={{left: gameStore.oppicerLocation[3]+backgroundLocation}}
+                  src={womanNPC}>
+                </img> */}
 
               </div>
             </div>
