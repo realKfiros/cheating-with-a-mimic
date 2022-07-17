@@ -20,7 +20,12 @@ const styleButcherMenu = css`
     }
   }
 `;
-const ButcherMenu = () => {
+
+interface ButcherMenu {
+  goBack: () => void;
+}
+
+const ButcherMenu = ({ goBack }: ButcherMenu) => {
   const { openDialog, closeDialog }: any = useContext(AppContext);
   const [stock, setStock] = useState<Stock[]>([]);
   // TODO: after "an hour" (or a day) it should refresh with new items
@@ -35,15 +40,20 @@ const ButcherMenu = () => {
         <ButcherBoard />
         <Spacer />
         <MenuButton
+          importance
           text="Buy"
           onClick={() =>
             openDialog({
               title: "Bought that",
               content: "enjoy :)",
               buttons: [
-                { title: "Close", onClick: closeDialog },
-                { title: "I regret", onClick: () => window.alert("no regrets!") },
+                {
+                  title: "Close",
+                  onClick: closeDialog,
+                },
+                { title: "I regret", onClick: closeDialog },
               ],
+              onClose: () => goBack(),
             })
           }
         />

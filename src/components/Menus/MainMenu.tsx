@@ -16,10 +16,11 @@ const MainMenu: FC<MainMenuProps> = ({ onStart }) => {
   return (
     <div css={menu}>
       <div className="title">Cheating with a Mimic</div>
-      <MenuButton text="Start" onClick={() => onStart()} />
+      <MenuButton text="Start" onClick={() => onStart()} importance />
       <MenuButton
         text="Credits"
         onClick={() => openDialog({ title: "Credits", content: <Credits /> })}
+        importance={false}
       />
     </div>
   );

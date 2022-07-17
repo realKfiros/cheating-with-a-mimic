@@ -1,31 +1,35 @@
 import { css } from "@emotion/react";
+import button from "../assets/buttons/button.png";
+import button_hover from "../assets/buttons/button_hover.png";
 
 interface MenuButtonProps {
   text: string;
+  importance: boolean;
   onClick: () => void;
 }
 
-const styleMenuButton = css`
+const styleMenuButton = ({ text, importance }: any) => css`
+  font-family: ${importance ? "PixeliodSansBold" : "PixeliodSans"};
   cursor: pointer;
-  border: 2px solid black;
-  border-radius: 5.6px;
   width: 47px;
   height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 7px;
-  background-color: #d9d1a9;
+  background-color: none;
   color: #0d0d0d;
   line-height: 0.5rem;
+  background-image: url(${button});
+  background-size: cover;
 
   &:active {
-    background-color: #a6a381;
+    background-image: url(${button_hover});
   }
 `;
-const MenuButton = ({ text, onClick }: MenuButtonProps) => {
+const MenuButton = ({ text, onClick, importance }: MenuButtonProps) => {
   return (
-    <div css={styleMenuButton} onClick={onClick}>
+    <div css={styleMenuButton({ text, importance })} onClick={onClick}>
       {text}
     </div>
   );
