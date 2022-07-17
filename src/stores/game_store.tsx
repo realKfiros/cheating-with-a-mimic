@@ -34,7 +34,7 @@ export class GameStore implements GameStoreProps
 {
     @observable hunger = 100;
     @observable suspicion = 0;
-    @observable money = 100;
+    @observable money = 20;
     @observable running = true;
     @observable lost = false;
     @observable stage = Stage.STREET;
