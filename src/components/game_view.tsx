@@ -157,15 +157,15 @@ export const GameView: FC<GameViewProps> = observer(
     const gameStore = useContext(GameContext);
 
     useEffect(() => {
-      console.log("updated");
-      console.log("new stage in useeffect ", gameStore.tableStage);
+    //   console.log("updated");
+    //   console.log("new stage in useeffect ", gameStore.tableStage);
 
       if (gameStore.tableStage == TableStage.PLAYER_ROLLING) {
-        console.log("playe rolling");
+        // console.log("playe rolling");
         startRoll();
       }
 
-      console.log("new stage: ", gameStore.tableStage);
+    //   console.log("new stage: ", gameStore.tableStage);
       if (gameStore.tableStage == TableStage.ASK_BET) {
         askBettingAmount();
         gameStore.setTableStage(TableStage.WAITING_BET);
@@ -215,26 +215,26 @@ export const GameView: FC<GameViewProps> = observer(
       autorun(() => {
         // console.log(gameStore.npcDiceResult);
         let result = gameStore.npcDiceResult;
-        console.log("result: ", result);
+        // console.log("result: ", result);
         setdiceFiles([getDiceFile(result[0]), getDiceFile(result[1])]);
       });
       autorun(() => {
         // console.log(gameStore.npcDiceResult);
         let result = gameStore.playerDiceResult;
-        console.log("result: ", result);
+        // console.log("result: ", result);
         setdiceFiles([getDiceFile(result[0]), getDiceFile(result[1])]);
       });
     }, []);
 
     useEffect(() => {
       let result = gameStore.npcDiceResult;
-      console.log("result: ", result);
+    //   console.log("result: ", result);
       setdiceFiles([getDiceFile(result[0]), getDiceFile(result[1])]);
     }, [gameStore.npcDiceResult]);
 
     useEffect(() => {
       let result = gameStore.playerDiceResult;
-      console.log("result: ", result);
+    //   console.log("result: ", result);
       setdiceFiles([getDiceFile(result[0]), getDiceFile(result[1])]);
     }, [gameStore.playerDiceResult]);
 
@@ -311,7 +311,7 @@ export const GameView: FC<GameViewProps> = observer(
     };
 
     function onLeftClick() {
-      console.log("stage from gamestore: ", gameStore.tableStage);
+    //   console.log("stage from gamestore: ", gameStore.tableStage);
       // console.log("stage from state: ", tableStage);
       if (gameStore.tableStage == TableStage.PLAYER_WAIT_INPUT) {
         gameStore.shouldCheat = false;
@@ -362,7 +362,7 @@ export const GameView: FC<GameViewProps> = observer(
 
     const tryEnter = () => {
       let locationInStreet = playerLocation - backgroundLocation;
-      console.log("location: ", locationInStreet);
+    //   console.log("location: ", locationInStreet);
       if (locationInStreet > 20 && locationInStreet < 70) {
         showButcher();
       }
