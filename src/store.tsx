@@ -3,6 +3,14 @@ import React, {ReactNode} from "react";
 
 export const AppContext = React.createContext<any>(null);
 
+// @ts-ignore
+let msInstance = null;
+export const mainStoreInstance = (init: boolean = false) =>
+{
+	// @ts-ignore
+	return msInstance = msInstance || (init && new Store());
+};
+
 export interface StoreProps {
 	dialog: DialogProps;
 }

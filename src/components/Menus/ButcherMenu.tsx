@@ -29,7 +29,7 @@ interface ButcherMenu {
 }
 
 const ButcherMenu = ({ goBack }: ButcherMenu) => {
-  const { openDialog, closeDialog }: any = useContext(AppContext);
+  const { buyMeatItems }: any = useContext(GameContext);
 
   // const [stock, setStock] = useState<Stock[]>(gameStore.meatItems);
   // TODO: after "an hour" (or a day) it should refresh with new items
@@ -46,18 +46,7 @@ const ButcherMenu = ({ goBack }: ButcherMenu) => {
         <MenuButton
           importance
           text="Buy"
-          onClick={() =>
-            openDialog({
-              title: "Bought that",
-              content: "enjoy :)",
-              buttons:
-                {
-                  title: "Close",
-                  onClick: closeDialog,
-                },
-              onClose: () => goBack(),
-            })
-          }
+          onClick={() => buyMeatItems()}
         />
       </div>
     </div>
@@ -90,7 +79,7 @@ const ButcherBoard: FC<ButcherBoardProps> = observer((cart, setCart) => {
   return (
     <div css={styleButcherBoard}>
       {(meatItems as meatItem[]).map((o, index) => (
-        <Item key={index} {...o} setCart={setCart} />
+        <Item key={index} {...o} setCart={setCart} index={index} />
       ))}
     </div>
   );
@@ -133,22 +122,22 @@ const styleItem = ({ selected }: any) => css`
   }
 `;
 
-interface ButcherItem extends meatItem{
-  setCart: React.Dispatch<React.SetStateAction<number[]>>
+interface ButcherItem extends meatItem
+{
+  setCart: React.Dispatch<React.SetStateAction<number[]>>;
+  index: number;
 }
 
-const Item: FC<ButcherItem> = ({ name, price, image, setCart }) => {
-  const [selected, setSelected] = useState(false);
-
-
+const Item: FC<ButcherItem> = observer(({ name, price, image, setCart, index }) => {
+  const {toggleMeatItem, selectedItems} = useContext(GameContext);
 
   return (
-    <div css={styleItem({ selected })} onClick={() => setSelected(!selected)}>
+    <div css={styleItem({ selected: selectedItems.has(index) })} onClick={() => toggleMeatItem(index)}>
       <img src={image} />
       <span className="item-title">{name}</span>
       <span className="item-price">{price}$</span>
     </div>
   );
-};
+});
 
 export default ButcherMenu;
