@@ -18,6 +18,7 @@ import womanNPC from "../assets/NPCs/gifs/NPC-Woman_Walk.gif";
 import manNPC from "../assets/NPCs/gifs/NPC-Man_Walk.gif";
 import mainBackground from "../assets/Street-BackGround.png";
 import hungerImage from "../assets/HUNGER.png";
+import susImage from "../assets/sus.png";
 import rollies from "../assets/sounds/dice_rolling.wav";
 import Meter from "../components/meters/Meter";
 import MenuButton from "./menu_button";
@@ -122,6 +123,10 @@ const styleGameView = css`
     z-index: 5;
   }
   .hungerImage{
+    position:absolute;
+    top: -10px;
+  }
+  .susImage{
     position:absolute;
     top: -10px;
   }
@@ -349,7 +354,7 @@ export const GameView: FC<GameViewProps> = observer(
         tryEnter();
       }
       if (moveDirection == "down") {
-        sitDown();
+        tryEnter();
       }
     };
 
@@ -359,16 +364,11 @@ export const GameView: FC<GameViewProps> = observer(
       if (locationInStreet > 20 && locationInStreet < 70) {
         showButcher();
       }
-    };
-
-    const sitDown = () => {
-      let locationInStreet = playerLocation - backgroundLocation;
-      console.log("location: ", locationInStreet);
       if (locationInStreet > 571 && locationInStreet < 741) {
         gameStore.stage = Stage.TABLE;
-        console.log("sit");
       }
     };
+
     const keyDown = (keyValue: string) => {
       switch (keyValue) {
         case "ArrowRight":
@@ -503,11 +503,12 @@ export const GameView: FC<GameViewProps> = observer(
           </div>
         )}
         <div className="spriteObject hungerBar">
-        <img className="spriteObject hungerImage" src={hungerImage}></img>
+            <img className="spriteObject hungerImage" src={hungerImage}></img>
           <Meter value={gameStore.hunger} label="" />
         </div>
         <div className="spriteObject susBar">
-          <Meter value={gameStore.suspicion} label="?" />
+            <img className="spriteObject susImage" src={susImage}></img>
+          <Meter value={gameStore.suspicion} label="" />
         </div>
         <div className="spriteObject moneyView">
           {gameStore.money}$
